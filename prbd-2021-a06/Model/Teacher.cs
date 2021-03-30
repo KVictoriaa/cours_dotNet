@@ -6,5 +6,9 @@ namespace prbd_2021_a06.Model
 {
     class Teacher : User
     {
+        public void createQuiz()
+        {
+
+        }
     }
 }
