@@ -12,8 +12,11 @@ namespace prbd_2021_a06.ViewModel
     public class LoginViewModel : ViewModelCommon
     {
         public event Action OnLoginSuccess;
+        public event Action OnSignup;
 
         public ICommand LoginCommand { get; set; }
+
+        public ICommand SignupCommand { get; set; }
 
         private string email;
         public string Email { get => email; set => SetProperty<string>(ref email, value, () => Validate()); }
@@ -27,6 +30,9 @@ namespace prbd_2021_a06.ViewModel
                 LoginAction,
                 () => { return email != null && password != null && !HasErrors; }
             );
+            SignupCommand = new RelayCommand(
+                SignupAction,
+                () => { return true; });
         }
 
         private void LoginAction()
@@ -41,6 +47,12 @@ namespace prbd_2021_a06.ViewModel
             }
         }
 
+        private void SignupAction() 
+        {
+            OnSignup.Invoke();
+
+        }
+
         public override bool Validate()
         {
             ClearErrors();
@@ -48,9 +60,9 @@ namespace prbd_2021_a06.ViewModel
             var user = (from u in App.Context.Users
                         where u.Email.Equals(Email)
                         select u).FirstOrDefault();
-            Console.WriteLine(Email);
+           
             if (user != null)
-                Console.WriteLine(user.Email);
+               
             if (string.IsNullOrEmpty(Email))
                 AddError(nameof(Email), Resources.Error_Required);
             else if (Email.Length < 3)

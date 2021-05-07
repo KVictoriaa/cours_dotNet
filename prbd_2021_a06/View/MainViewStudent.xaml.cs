@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PRBD_Framework;
 using prbd_2021_a06.Properties;
-
+using prbd_2021_a06.Model;
 
 namespace prbd_2021_a06.View
 {
@@ -29,6 +29,24 @@ namespace prbd_2021_a06.View
         private void Vm_OnLogout()
         {
             App.NavigateTo<LoginView>();
+        }
+        private void Vm_DiplayCourse(Course course, bool isNew)
+        {
+            if (course != null)
+            {
+                var tab = tabControl.FindByTag(course.Title);
+                if (tab == null)
+                {
+                    tabControl.Add(
+                        new CourseViewDetails(course, isNew),
+                        isNew ? "<new Course>" : course.Title
+                     );
+                }
+                else
+                {
+                    tabControl.SetFocus(tab);
+                }
+            }
         }
     }
 }

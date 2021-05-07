@@ -9,6 +9,11 @@ using prbd_2021_a06.Properties;
 
 namespace prbd_2021_a06
 { 
+    public enum AppContext{ 
+        MSG_DISPLAY_COURSE,
+        MSG_NEW_COURSE,
+        MSG_TITLECOURSE_CHANGED
+    }
     public partial class App : ApplicationBase {
         public static Context Context { get => Context<Context>(); }
 
@@ -34,9 +39,9 @@ namespace prbd_2021_a06
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            //Context.Database.EnsureDeleted();
-            //Context.Database.EnsureCreated();
-            //Context.SeedData();
+            Context.Database.EnsureDeleted();
+            Context.Database.EnsureCreated();
+            Context.SeedData();
         }
 
         protected override void OnRefreshData()

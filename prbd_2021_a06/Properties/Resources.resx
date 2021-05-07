@@ -129,4 +129,7 @@
   <data name="Error_WrongPassword" xml:space="preserve">
     <value>mauvais mot de passe</value>
   </data>
+  <data name="Menu_Logout" xml:space="preserve">
+    <value>Lo_gout</value>
+  </data>
 </root>

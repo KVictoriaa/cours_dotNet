@@ -30,7 +30,7 @@ namespace prbd_2021_a06.View
         }
         private void Vm_OnLogin()
         {
-            Console.WriteLine("hello");
+            
             App.NavigateTo<LoginView>();
         }
 

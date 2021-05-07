@@ -6,22 +6,29 @@
         xmlns:vw="clr-namespace:prbd_2021_a06.View"
         xmlns:vm="clr-namespace:prbd_2021_a06.ViewModel"
         xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
-        
+        xmlns:p="clr-namespace:prbd_2021_a06.Properties"
         mc:Ignorable="d"
         
         Title="MainViewStudent"
         Height="768" Width="1024">
     <Window.DataContext>
-        <vm:MainViewModelStudent x:Name="vm" />
+        <vm:MainViewModelStudent x:Name="vm" OnLogout="Vm_OnLogout" DisplayCourse="Vm_DiplayCourse"/>
     </Window.DataContext>
     <Grid>
-        <f:MyTabControl x:Name="tabControl" Margin="10" Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="31"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="{x:Static p:Resources.Menu_Logout}" Command="{Binding LogoutCommand}" />
+        </Menu>
+        <f:MyTabControl x:Name="tabControl" Margin="10,10,10,10" Grid.Row="1">
             <TabItem x:Name="coursTab" Header="Cours" Tag="Cors">
                 <ContentControl>
-                   
+                    <vw:CourseView/>
                 </ContentControl>
             </TabItem>
         </f:MyTabControl>
     </Grid>
-    
+
 </f:WindowBase>

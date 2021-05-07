@@ -52,6 +52,20 @@ namespace prbd_2021_a06.Model
         {
             get => this.Role == Role.Teacher;
         }
+
+        public bool IsStudent
+        {
+            get => this.Role == Role.Student;
+        }
+
+        [NotMapped]
+        public bool IsValideStudents
+        {
+            get
+            {
+                return (from s in StudentCourses where s.IsValide == true select s).Any();
+            }
+        }
     }
     
 }

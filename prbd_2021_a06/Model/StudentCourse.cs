@@ -20,5 +20,11 @@ namespace prbd_2021_a06.Model {
         public virtual ICollection<AnswerQuestions> AnswerQuestions { get; set; } = new HashSet<AnswerQuestions>();
         public virtual ICollection<Note> Notes { get; set; } = new HashSet<Note>();
 
+
+        public StudentCourse (
+            )
+        {
+        }
+        
     }
 }

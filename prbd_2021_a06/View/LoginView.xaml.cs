@@ -24,11 +24,15 @@ namespace prbd_2021_a06.View
         {
             InitializeComponent();
         }
+
+     
+
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-        private void Signup(object sender, RoutedEventArgs e) {
+        private void Vm_OnSignup()
+        {
             App.NavigateTo<SignupView>();
         }
 
@@ -44,8 +48,9 @@ namespace prbd_2021_a06.View
             }
             
         }
+        
 
-        private void txtPseudo_GotFocus(object sender, RoutedEventArgs e)
+        private void txtEmail_GotFocus(object sender, RoutedEventArgs e)
         {
             txtEmail.SelectAll();
         }

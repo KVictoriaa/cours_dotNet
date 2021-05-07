@@ -13,7 +13,7 @@
         Width="250" Height="200"
         SizeToContent="WidthAndHeight" >
     <Window.DataContext>
-        <vm:LoginViewModel x:Name="vm" OnLoginSuccess="Vm_OnLoginSuccess"/>
+        <vm:LoginViewModel x:Name="vm" OnLoginSuccess="Vm_OnLoginSuccess" OnSignup ="Vm_OnSignup"/>
     </Window.DataContext>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -30,7 +30,7 @@
         <Label x:Name="label" Content="Email" VerticalAlignment="Center" Padding="5" />
         <f:ValidatedField Grid.Column="1" VerticalAlignment="Center">
             <TextBox x:Name="txtEmail" TextWrapping="Wrap" Grid.Column="1" 
-                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" GotFocus="txtPseudo_GotFocus"/>
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" GotFocus="txtEmail_GotFocus"/>
         </f:ValidatedField>
         <Label Content="Mot de passe" Grid.Row="1" VerticalAlignment="Center" Padding="5"/>
         <f:ValidatedField Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
@@ -50,7 +50,7 @@
         <DockPanel Grid.Row="3" Grid.ColumnSpan="2">
             <TextBlock Height="auto" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Width="220" >
                 <Run Text="Si vous n'avez pas de pseudo ni de mot de passe, cliquez"/>
-                <Hyperlink Command="{Binding SignUp}"><Run Text="ici"/></Hyperlink>
+                <Hyperlink Command="{Binding SignupCommand}"><Run Text="ici"/></Hyperlink>
                 <Run Text="pour vous enregistrer."/>
             </TextBlock>
         </DockPanel>

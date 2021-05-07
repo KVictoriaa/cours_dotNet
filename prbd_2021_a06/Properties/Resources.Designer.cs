@@ -22,7 +22,7 @@ namespace prbd_2021_a06.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace prbd_2021_a06.Properties {
         ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("prbd_2021_a06.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace prbd_2021_a06.Properties {
         ///   les recherches de ressources à l'aide de cette classe de ressource fortement typée.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace prbd_2021_a06.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à n&apos;existe pas.
         /// </summary>
-        internal static string Error_DoesNotExist {
+        public static string Error_DoesNotExist {
             get {
                 return ResourceManager.GetString("Error_DoesNotExist", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace prbd_2021_a06.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à longueur doit être &gt;= 3.
         /// </summary>
-        internal static string Error_LengthGreaterEqual3 {
+        public static string Error_LengthGreaterEqual3 {
             get {
                 return ResourceManager.GetString("Error_LengthGreaterEqual3", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace prbd_2021_a06.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Requis.
         /// </summary>
-        internal static string Error_Required {
+        public static string Error_Required {
             get {
                 return ResourceManager.GetString("Error_Required", resourceCulture);
             }
@@ -90,9 +90,18 @@ namespace prbd_2021_a06.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à mauvais mot de passe.
         /// </summary>
-        internal static string Error_WrongPassword {
+        public static string Error_WrongPassword {
             get {
                 return ResourceManager.GetString("Error_WrongPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lo_gout.
+        /// </summary>
+        public static string Menu_Logout {
+            get {
+                return ResourceManager.GetString("Menu_Logout", resourceCulture);
             }
         }
     }
