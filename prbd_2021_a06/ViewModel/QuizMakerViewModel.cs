@@ -141,12 +141,12 @@ namespace prbd_2021_a06.ViewModel
         }
         public string Course
         {
-            get { return Quizz?.Course.Title; }
+            get { return Quizz?.Course?.Title; }
             set
             {
                 Quizz.Course.Title = value;
                 RaisePropertyChanged(nameof(Course));
-                //NotifyColleagues(AppContext.MSG_TITLEQUIZZ_CHANGED, Quizz);
+               
             }
         }
 
@@ -156,7 +156,27 @@ namespace prbd_2021_a06.ViewModel
             get => quizzId;
             set => SetProperty<int>(ref quizzId, value);
         }
-        
+        public DateTime? Debut
+        {
+            get { return Quizz?.Debut; }
+            set
+            {
+                if (value != null)
+                    Quizz.Debut = value.Value;
+                RaisePropertyChanged(nameof(Debut));
+            }
+        }
+        public DateTime? Fin
+        {
+
+            get { return Quizz?.Fin; }
+            set
+            {
+                if (value != null)
+                    Quizz.Fin = value.Value;
+                RaisePropertyChanged(nameof(Fin));
+            }
+        }
 
         public IEnumerable<Question> questions;
         public IEnumerable<Question> Questions
@@ -164,11 +184,6 @@ namespace prbd_2021_a06.ViewModel
             get { return Quizz?.Questions; }
             set
             {
-
-                //Quizz.Questions.= value;
-               // PropositionsString = string.Join(",", SelectedQuestion.Propositions);
-                //Console.WriteLine(PropositionsString);
-                //EditMode = true;
                 RaisePropertyChanged(nameof(Questions));
                 //Validate();
             }

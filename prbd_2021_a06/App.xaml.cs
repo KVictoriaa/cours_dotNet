@@ -25,6 +25,7 @@ namespace prbd_2021_a06
         MSG_Quizz_CHANGED,
         MSG_Quizz,
         MSG_DISPLAY_QUIZZSTUDENT,
+        MSG_CLOSE_TABQUIZZ
 
 
     }

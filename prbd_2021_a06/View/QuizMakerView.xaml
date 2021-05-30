@@ -43,10 +43,10 @@
                 <Label Content="Title :"  Grid.RowSpan="3" Grid.Row="1" />
                 <TextBox x:Name="Title" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" VerticalAlignment="Center" Height="18" Margin="79,0,0,10"/>
                 <Label Content="Start :" Grid.Row="2" Margin="0,0,0,10" />
-                <DatePicker Height="25"  HorizontalAlignment="Left" Margin="79,0,0,46"  Grid.RowSpan="2" x:Name="datePicker1"   
+                <DatePicker Height="25"  HorizontalAlignment="Left" Margin="79,0,0,46" SelectedDate="{Binding Debut}" Grid.RowSpan="2" x:Name="datePicker1"   
                             Grid.Row="2" Width="115" />
                 <Label Content="FInish :" Grid.Row="3"  Margin="0,0,0,10" />
-                <DatePicker Height="25" HorizontalAlignment="Left" Margin="79,0,0,46"   Grid.RowSpan="2" x:Name="datePicker2"   
+                <DatePicker Height="25" HorizontalAlignment="Left" Margin="79,0,0,46" SelectedDate="{Binding Fin}"  Grid.RowSpan="2" x:Name="datePicker2"   
                              Width="115" Grid.Row="3" />
                 <Label Content="Course :" Grid.Row="4" Margin="0,0,0,10"/>
                 <TextBox x:Name="Course" Text="{Binding Course, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Grid.Row="4" Height="18" Margin="79,0,0,10"/>

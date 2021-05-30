@@ -16,25 +16,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <!--<ListView x:Name="listView" ItemsSource="{Binding QuizzesView}" Grid.Row="2" BorderBrush="Transparent" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="ListView_MouseDoubleClick" >
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding DisplayMemberDetails}" CommandParameter="{Binding ElementName=listView, Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock FontSize="14" FontWeight="Bold" Width="80" TextAlignment="Center" Text="{Binding Course}" /> 
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
+        
         <DataGrid x:Name="gridQuizz" Margin="10,10,10,9" AutoGenerateColumns="False"
                       ItemsSource="{Binding QuizzesView}"  IsReadOnly="True" 
                       MouseDoubleClick="QuizzView_MouseDoubleClick"

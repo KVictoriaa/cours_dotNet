@@ -36,7 +36,9 @@ namespace prbd_2021_a06.View
             if(course != null)
             {
                 var tab = tabControl.FindByTag(course.Title);
-                if(tab == null)
+                if (isNew)
+                    tab = tabControl.FindByTag("<new Course>");
+                if (tab == null)
                     tabControl.Add(
                         new CourseViewDetails(course, isNew),
                         isNew ? "<new Course>" : course.Title
@@ -56,6 +58,8 @@ namespace prbd_2021_a06.View
                 Console.WriteLine(quizz);
                
                 var tab = tabControl.FindByTag(quizz.Title);
+                if (isNew)
+                    tab = tabControl.FindByTag("<new Quizz>");
                 if (tab == null)
                     tabControl.Add(
                         new QuizMakerView(quizz, isNew),
@@ -64,7 +68,6 @@ namespace prbd_2021_a06.View
                 
                 else
                 {
-                    Console.WriteLine(tab == null);
                     tabControl.SetFocus(tab);
                 }
             }
@@ -74,6 +77,11 @@ namespace prbd_2021_a06.View
         private void Vm_CloseTab(Course course)
         {
             var tab = tabControl.FindByTag(course.Title);
+            tabControl.Items.Remove(tab);
+        }
+        private void Vm_CloseTabQuiz(Quiz quiz)
+        {
+            var tab = tabControl.FindByTag(quiz.Title);
             tabControl.Items.Remove(tab);
         }
 
