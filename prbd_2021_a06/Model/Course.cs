@@ -17,6 +17,7 @@ namespace prbd_2021_a06.Model
         public int MaxStudent { get; set; }
         public virtual User Teacher { get; set; } 
         public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new HashSet<StudentCourse>();
+        public virtual ICollection<Question> Questions { get; set; } = new HashSet<Question>();
         public virtual ICollection<Quiz> Quizzes { get; set; } = new HashSet<Quiz>();
 
         [NotMapped]
@@ -71,6 +72,29 @@ namespace prbd_2021_a06.Model
                     ).FirstOrDefault();
             }
         }
+        public Quiz GetQuizBytime
+        {
+            get
+            {
+                return
+                    (
+                    from q in Quizzes
+                    where q.Course.Id.Equals(this.Id)
+                    select q
+                    ).FirstOrDefault();
+            }
+        }
+        public Visibility AnswerQuizz
+        {
+            get
+            {
+                if (!(App.CurrentUser.IsTeacher) && (GetQuizBytime.Debut > DateTime.Now))
+                {
+                    return Visibility.Collapsed;
+                }
+                return Visibility.Visible;
+            }
+        }
         public Visibility IsPending
         {
             get
@@ -94,6 +118,7 @@ namespace prbd_2021_a06.Model
                 return Visibility.Visible;
             }
         }
+       
         
         public Course(string Title,
             string Description,
@@ -103,10 +128,17 @@ namespace prbd_2021_a06.Model
             this.Title = Title;
             this.Description = Description;
             this.MaxStudent = MaxStudent;
-            
+        }
 
-           
-           
+        public IQueryable<Quiz> GetQuizzes(Course observer)
+        {
+            var quizzes = Context.Quizzes.Where(q => q.Course == observer);
+            return quizzes;
+        }
+
+        public Course()
+        {
+
         }
         public static IQueryable<Course> GetAll()
         {
@@ -120,6 +152,24 @@ namespace prbd_2021_a06.Model
                            orderby c.Title
                            select c;
             return filtered;
+        }
+        public IQueryable<Question> GetReceivedAndVisibleMessages(Course observer)
+        {
+            var questions =
+                Context.Questions.Where(m =>
+                    m.Course == observer);
+            return questions;
+
+        }
+
+        public static Course GetByTitle(string title)
+        {
+            return Context.Courses.SingleOrDefault(c => c.Title == title);
+        }
+        public void Delete()
+        {
+            Context.Courses.Remove(this);
+            Context.SaveChanges();
         }
 
         public override string ToString()
