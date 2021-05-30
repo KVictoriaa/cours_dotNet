@@ -30,7 +30,10 @@ namespace prbd_2021_a06.ViewModel {
         public static void Logout() {
             App.Logout();
         }
-
+        public static Course CurrentCourse
+        {
+            get => App.CurrentCourse;
+        }
         public static bool IsLoggedIn { get => App.IsLoggedIn; }
     }
 }

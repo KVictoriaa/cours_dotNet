@@ -14,5 +14,19 @@ namespace prbd_2021_a06.Model
         public virtual StudentCourse StudentCourse { get; set; }
         public virtual Proposition Proposition { get; set; }
         public virtual QuestionQuiz QuestionQuiz { get; set; }
+
+        public AnswerQuestions(StudentCourse StudentCourse,
+            Proposition Proposition,
+            QuestionQuiz QuestionQuiz)
+        {
+            this.QuestionQuiz = QuestionQuiz;
+            this.Proposition = Proposition;
+            this.StudentCourse = StudentCourse;
+        }
+
+        public AnswerQuestions()
+        {
+
+        }
     }
 }

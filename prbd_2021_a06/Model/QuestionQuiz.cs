@@ -16,5 +16,19 @@ namespace prbd_2021_a06.Model
         public virtual Quiz Quiz { get; set; }
         public virtual Question Question { get; set; }
 
+
+        //public QuestionQuiz(int Points, Question Question, Quiz Quiz)
+        //{
+        //    this.Point = Points;
+        //    this.Question = Question;
+        //    this.Quiz = Quiz;
+        //}
+        
+        public QuestionQuiz()
+        {
+
+        }
+
+
     }
 }
