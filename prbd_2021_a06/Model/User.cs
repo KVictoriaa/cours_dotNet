@@ -5,17 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Linq;
 using PRBD_Framework;
+using prbd_2021_a06.ViewModel;
 
 namespace prbd_2021_a06.Model
 {
-    public enum Role
-    {
-        Student,Teacher
+    public enum Role {
+        Student, Teacher
     }
-    public class User : EntityBase <Context>
-    {
+    public class User : EntityBase<Context> {
         [Key]
-        public int Id { get; set;}
+        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string Password { get; set; }
@@ -29,14 +28,13 @@ namespace prbd_2021_a06.Model
         public User() { }
         public User(
             string LastName,
-            string FirstName, 
-            string Password, 
+            string FirstName,
+            string Password,
             string Email,
             Role Role = Role.Student
-        
-        )
-        {
-           
+
+        ) {
+
             this.LastName = LastName;
             this.FirstName = FirstName;
             this.Password = Password;
@@ -44,28 +42,50 @@ namespace prbd_2021_a06.Model
             this.Role = Role;
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return LastName + " " + FirstName;
         }
-        public bool IsTeacher
-        {
+        public bool IsTeacher {
             get => this.Role == Role.Teacher;
         }
 
-        public bool IsStudent
-        {
+        public bool IsStudent {
             get => this.Role == Role.Student;
         }
 
         [NotMapped]
-        public bool IsValideStudents
-        {
-            get
-            {
+        public bool IsValideStudents {
+            get {
                 return (from s in StudentCourses where s.IsValide == true select s).Any();
             }
         }
+
+        public static IQueryable<StudentHelper> GetAllStudentNotRegister(string filter, int courseId)
+        {
+            var filtered = Context.Users.Where(u =>
+                            u.Role == Role.Student &&
+                            (!u.StudentCourses.Any(sc => sc.Course.Id == courseId) ||
+                            u.StudentCourses.Any(sc => sc.Course.Id == courseId && !sc.IsActif))
+                           && (u.FirstName.Trim().ToLower().Contains(filter.ToLower().Trim())
+                           || u.LastName.Trim().ToLower().Contains(filter.ToLower().Trim())
+                           )).OrderBy(u => u.FirstName).Select(s => new StudentHelper()
+                           {
+                               StudentId = s.Id,
+                               StudentName = $"{s.FirstName} {s.LastName}"
+                           })
+                           ;
+
+            return filtered;
+        }
+        public IQueryable<Course> GetReceivedAndVisibleMessages(User observer)
+        {
+            var questions =
+                Context.Courses.Where(m =>
+                    m.Teacher == observer);
+            return questions;
+
+        }
     }
-    
+
+
 }

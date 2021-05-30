@@ -61,6 +61,15 @@ namespace prbd_2021_a06.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à email existe déja.
+        /// </summary>
+        public static string Error_DoesExist {
+            get {
+                return ResourceManager.GetString("Error_DoesExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à n&apos;existe pas.
         /// </summary>
         public static string Error_DoesNotExist {
@@ -93,6 +102,15 @@ namespace prbd_2021_a06.Properties {
         public static string Error_WrongPassword {
             get {
                 return ResourceManager.GetString("Error_WrongPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à le mot de passe et confirm password ne sont pas identique.
+        /// </summary>
+        public static string Error_WrongPasswordConfirm {
+            get {
+                return ResourceManager.GetString("Error_WrongPasswordConfirm", resourceCulture);
             }
         }
         

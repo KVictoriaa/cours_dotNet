@@ -36,7 +36,7 @@ namespace prbd_2021_a06.View
 
         private void Vm_OnSignupSuccess()
         {
-            App.NavigateTo<MainView>();
+            App.NavigateTo < MainViewStudent > ();
         }
 
         private void txtEmail_GotFocus(object sender, RoutedEventArgs e)
@@ -59,6 +59,16 @@ namespace prbd_2021_a06.View
         private void txtConfirmPassword_GotFocus(object sender, RoutedEventArgs e)
         {
             txtConfirmPassword.SelectAll();
+        }
+
+        private void btnSignup_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void txtEmail_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

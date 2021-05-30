@@ -5,11 +5,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
-        xmlns:local="clr-namespace:prbd_2021_a06.View" xmlns:vm="clr-namespace:prbd_2021_a06.ViewModel"
+        xmlns:p="clr-namespace:prbd_2021_a06.Properties"
+        xmlns:vw="clr-namespace:prbd_2021_a06.View"
+        xmlns:vm="clr-namespace:prbd_2021_a06.ViewModel"
               mc:Ignorable="d"
         Title="signup" WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=txtEmail}" ResizeMode="NoResize"
-        Width="450" Height="400"
+        Width="650" Height="500"
         SizeToContent="WidthAndHeight" >
     <Window.DataContext>
         <vm:SignupViewModel x:Name="vm" OnSignupSuccess="Vm_OnSignupSuccess" OnLogin="Vm_OnLogin"/>
@@ -34,7 +36,7 @@
         <Label x:Name="label" Content="Email" VerticalAlignment="Center" Padding="5" Height="26" />
         <f:ValidatedField VerticalAlignment="Center" Height="18" Margin="42,0,0,0" Grid.Column="1">
             <TextBox x:Name="txtEmail" TextWrapping="Wrap" Grid.Column="1" 
-                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" GotFocus="txtEmail_GotFocus"/>
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" GotFocus="txtEmail_GotFocus" TextChanged="txtEmail_TextChanged"/>
         </f:ValidatedField>
         <Label x:Name="label1" Content="Nom"  Grid.Row="1" VerticalAlignment="Center" Padding="5" Height="26" />
         <f:ValidatedField  Grid.Row="1" VerticalAlignment="Center" Height="18" Margin="42,0,0,0" Grid.Column="1">
@@ -64,8 +66,7 @@
             <Button x:Name="btnCancel" Content="Cancel" 
                 HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" IsCancel="True" Margin="0,0,10,0" 
                 Click="btnCancel_Click" />
-            <Button x:Name="btnSignup" Content="Signup" 
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" IsDefault="True" Margin="10,0,0,0" 
+            <Button x:Name="btnSignup" Content="Signup" Width="75" IsDefault="True" Margin="10,0,0,0" 
                     Command="{Binding SignupCommand}"/>
         </DockPanel>
         <DockPanel Grid.Row="6" Grid.ColumnSpan="2">

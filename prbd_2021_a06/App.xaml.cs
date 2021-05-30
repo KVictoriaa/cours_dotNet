@@ -12,12 +12,27 @@ namespace prbd_2021_a06
     public enum AppContext{ 
         MSG_DISPLAY_COURSE,
         MSG_NEW_COURSE,
-        MSG_TITLECOURSE_CHANGED
+        MSG_TITLECOURSE_CHANGED,
+        MSG_COURSE_CHANGED,
+        MSG_CLOSE_TAB,
+        MSG_COURSES,
+        MSG_RENAME_TAB,
+        MSG_REFRESH_QUESTIONS,
+        MSG_DISPLAY_QUIZZ,
+        MSG_TITLEQUIZZ_CHANGED,
+        MSG_NEW_Quizz,
+        MSG_RENAMEQuizz_TAB,
+        MSG_Quizz_CHANGED,
+        MSG_Quizz,
+        MSG_DISPLAY_QUIZZSTUDENT,
+
+
     }
     public partial class App : ApplicationBase {
         public static Context Context { get => Context<Context>(); }
 
         public static User CurrentUser { get; private set; }
+        public static Course CurrentCourse { get; private set; }
 
         public static void Login(User user)
         {
@@ -39,9 +54,9 @@ namespace prbd_2021_a06
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Context.Database.EnsureDeleted();
-            Context.Database.EnsureCreated();
-            Context.SeedData();
+           Context.Database.EnsureDeleted();
+           Context.Database.EnsureCreated();
+           Context.SeedData();
         }
 
         protected override void OnRefreshData()

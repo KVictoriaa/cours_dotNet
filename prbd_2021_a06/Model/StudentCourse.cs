@@ -25,6 +25,50 @@ namespace prbd_2021_a06.Model {
             )
         {
         }
-        
+
+
+
+        public static StudentCourse UpdateStatus(int studentCourse) {
+            var studentCourses = Context.StudentCourses.Find(studentCourse);
+            studentCourses.IsActif = !studentCourses.IsActif;
+            Context.Update(studentCourses);
+            Context.SaveChanges();
+
+            return studentCourses;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="studentCourse"></param>
+        public static void UnRegister(int studentCourse) {
+            var studentCourses = Context.StudentCourses.Find(studentCourse);
+            Context.Remove(studentCourses);
+            Context.SaveChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <param name="courseId"></param>
+        public static void Register(int studentId, int courseId ) {
+            // Si le nombre d'étudiant est atteint
+            if (Context.StudentCourses.Count(sc => sc.Course.Id == courseId)
+                >= Context.Courses.FirstOrDefault(c => c.Id == courseId).MaxStudent)
+                return;
+            // Check if user is not already subscribe in the course
+            var isIn = Context.StudentCourses.Any(sc => sc.Student.Id == studentId && sc.Course.Id == courseId);
+            if (!isIn) {
+                var student = Context.Users.Find(studentId);
+                var course = Context.Courses.Find(courseId);
+                var studentcourse = new StudentCourse() { Course = course, Student = student, IsActif = true, IsValide = true };
+                Context.StudentCourses.Add(studentcourse);
+                Context.SaveChanges();
+            }
+           
+        }
+
+
     }
 }

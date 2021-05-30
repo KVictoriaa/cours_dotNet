@@ -13,6 +13,12 @@ namespace prbd_2021_a06.Model
         [Key]
         public int Id { get; set; }
         public virtual Question Questions { get; set; }
-        public virtual Category Categories { get; set; }
+        public virtual Category Categories { get; set; } 
+        public CategoryQuestion ()
+        {
+
+        }
     }
+
+   
 }

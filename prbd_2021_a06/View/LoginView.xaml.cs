@@ -40,7 +40,8 @@ namespace prbd_2021_a06.View
         {
             if(App.CurrentUser.Role == Model.Role.Teacher)
             {
-                App.NavigateTo<MainViewTeacher>();
+                 App.NavigateTo<MainViewTeacher>();
+                
             }
             else
             {

@@ -17,5 +17,20 @@ namespace prbd_2021_a06.Model {
         [NotMapped]
         public IEnumerable<Question> Questions { get => CategoryQuestions.Select(sc => sc.Questions); }
 
+        public Category (String title) { this.Title = title;  }
+
+
+        public void AddNew() {
+            Context.Categories.Add(this);
+            Context.SaveChanges();
+        }
+
+        public void Remove() {
+            Context.Categories.Remove(this);
+            Context.SaveChanges();
+        }
+
+
+
     }
 }

@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace prbd_2021_a06.ViewModel
 {
-    class GradeViewModel : ViewModelCommon
+    class Grade
     {
-        protected override void OnRefreshData()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

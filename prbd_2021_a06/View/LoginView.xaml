@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Title="Connexion" WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=txtEmail}" ResizeMode="NoResize"
-        Width="250" Height="200"
+        Width="250" Height="250"
         SizeToContent="WidthAndHeight" >
     <Window.DataContext>
         <vm:LoginViewModel x:Name="vm" OnLoginSuccess="Vm_OnLoginSuccess" OnSignup ="Vm_OnSignup"/>
@@ -54,5 +54,14 @@
                 <Run Text="pour vous enregistrer."/>
             </TextBlock>
         </DockPanel>
+        <StackPanel    Grid.Row="4" Grid.ColumnSpan="2">
+            <Button x:Name="btnLoginTeacher" Content="LoginTeacher as (Penelle) " 
+                Width="100" IsDefault="True"  
+                Command="{Binding LoginTeacher }" Margin="10,0,0,10"/>
+            <Button x:Name="btnLoginStudent" Content="btnLoginStudent as (Hello bonjour)" 
+                      Width="100" IsDefault="True" 
+                    Command="{Binding LoginStudent}" Margin="10,0,0,0"/>
+        </StackPanel>
+
     </Grid>
 </f:WindowBase>

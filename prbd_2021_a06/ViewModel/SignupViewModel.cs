@@ -16,31 +16,31 @@ namespace prbd_2021_a06.ViewModel
         private string email;
         public string Email { 
             get => email; 
-            set => SetProperty<string>(ref email, value); 
+            set => SetProperty<string>(ref email, value, () => Validate());
         }
 
         private string firstName;
         public string FirstName { 
             get => firstName; 
-            set => SetProperty<string>(ref firstName, value); 
+            set => SetProperty<string>(ref firstName, value, () => Validate());
         }
 
         private string lastName;
         public string LastName { 
             get => lastName; 
-            set => SetProperty<string>(ref lastName, value); 
+            set => SetProperty<string>(ref lastName, value, () => Validate());
         }
 
         private string password;
         public string Password { 
             get => password; 
-            set => SetProperty<string>(ref password, value); 
+            set => SetProperty<string>(ref password, value, () => Validate()); 
         }
 
         private string confirm_password;
         public string ConfirmPassword { 
             get => confirm_password; 
-            set => SetProperty<string>(ref confirm_password, value); 
+            set => SetProperty<string>(ref confirm_password, value, () => Validate());
         }
 
         public event Action OnSignupSuccess;
@@ -55,7 +55,7 @@ namespace prbd_2021_a06.ViewModel
                 SignupAction,
                 () =>
                 {
-                    return true;
+                    return email != null && firstName != null && lastName != null && password != null && confirm_password != null && !HasErrors;
                 }
                     //email != null && firstName != null && lastName != null && password != null && confirm_password != null && !HasErrors; }
             );
@@ -67,8 +67,8 @@ namespace prbd_2021_a06.ViewModel
        
         private void SignupAction()
         {
-            //if (Validate())
-            Console.WriteLine(Email);
+            if (Validate())
+           
             {
                 var user = App.Context.CreateUser(
                     Email , 
@@ -95,12 +95,34 @@ namespace prbd_2021_a06.ViewModel
                          where u.Email.Equals(Email)
                          select u).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(Email)) 
-                AddError(nameof(Email), Resources.Error_Required);
-            else if (Email.Length < 3)
-                AddError(nameof(Email), Resources.Error_LengthGreaterEqual3);
-            else if (user == null)
-                AddError(nameof(Email), Resources.Error_DoesNotExist);
+          
+                if (string.IsNullOrEmpty(Email)) 
+                    AddError(nameof(Email), Resources.Error_Required);
+                else if (Email.Length < 3)
+                    AddError(nameof(Email), Resources.Error_LengthGreaterEqual3);
+                //else if (user.Email != Email)
+                   // AddError(nameof(Email), Resources.Error_DoesExist);
+            
+            
+               /* if (string.IsNullOrEmpty(FirstName))
+                    AddError(nameof(FirstName), Resources.Error_Required);
+                else if (FirstName.Length < 3)
+                    AddError(nameof(FirstName), Resources.Error_LengthGreaterEqual3);
+                else if (user == null)
+                    AddError(nameof(FirstName), Resources.Error_DoesNotExist);
+            
+            
+                if (string.IsNullOrEmpty(LastName))
+                    AddError(nameof(LastName), Resources.Error_Required);
+                else if (LastName.Length < 3)
+                    AddError(nameof(LastName), Resources.Error_LengthGreaterEqual3);
+                else if (user == null)
+                    AddError(nameof(LastName), Resources.Error_DoesNotExist);
+            
+            
+                if ( Password != ConfirmPassword)
+                    AddError(nameof(ConfirmPassword), Resources.Error_WrongPasswordConfirm);
+            
 
             else
             {
@@ -108,13 +130,15 @@ namespace prbd_2021_a06.ViewModel
                     AddError(nameof(Password), Resources.Error_Required);
                 else if (Password.Length < 3)
                     AddError(nameof(Password), Resources.Error_LengthGreaterEqual3);
-                else if (user != null && user.Password != Password)
+                else if ( user.Password == Password)
                     AddError(nameof(Password), Resources.Error_WrongPassword);
-            }
+            }*/
 
             RaiseErrors();
             return !HasErrors;
         }
+
+
 
         protected override void OnRefreshData()
         {
