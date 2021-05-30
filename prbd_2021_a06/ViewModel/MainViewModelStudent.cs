@@ -14,12 +14,21 @@ namespace prbd_2021_a06.ViewModel
     {
         public event Action OnLogout;
         public event Action<Course, bool> DisplayCourse;
+        public event Action<Quiz, bool> DiplayQuizzStudent;
+
         public ICommand LogoutCommand { get; set; }
         public MainViewModelStudent() : base()
         {
+            LogoutCommand = new RelayCommand(LogoutAction);
             Register<Course>(this, AppContext.MSG_DISPLAY_COURSE, course =>
             {
                 DisplayCourse?.Invoke(course, false);
+            });
+            Register<Quiz>(this, AppContext.MSG_DISPLAY_QUIZZSTUDENT, quiz =>
+            {
+
+                DiplayQuizzStudent?.Invoke(quiz, false);
+
             });
         }
         private void LogoutAction()
@@ -30,6 +39,10 @@ namespace prbd_2021_a06.ViewModel
         protected override void OnRefreshData()
         {
             
+        }
+        public string Title
+        {
+            get => $"My School ({CurrentUser.FirstName + " - " +CurrentUser.Role})";
         }
     }
 }

@@ -37,16 +37,60 @@ namespace prbd_2021_a06.View
             {
                 var tab = tabControl.FindByTag(course.Title);
                 if(tab == null)
-                {
                     tabControl.Add(
                         new CourseViewDetails(course, isNew),
                         isNew ? "<new Course>" : course.Title
                      ) ;
-                }
+                
                 else
                 {
                     tabControl.SetFocus(tab);
                 }
+            }
+        }
+        private void Vm_DiplayQuizz(Quiz quizz, bool isNew)
+        {
+            
+            if (quizz != null)
+            {
+                Console.WriteLine(quizz);
+               
+                var tab = tabControl.FindByTag(quizz.Title);
+                if (tab == null)
+                    tabControl.Add(
+                        new QuizMakerView(quizz, isNew),
+                        isNew ? "<new Quizz>" : quizz.Title
+                     );
+                
+                else
+                {
+                    Console.WriteLine(tab == null);
+                    tabControl.SetFocus(tab);
+                }
+            }
+        }
+       
+
+        private void Vm_CloseTab(Course course)
+        {
+            var tab = tabControl.FindByTag(course.Title);
+            tabControl.Items.Remove(tab);
+        }
+
+        private void Vm_RenameTab(Course course , string Title)
+        {
+            var tab = tabControl.SelectedItem as TabItem;
+            if(tab != null)
+            {
+                tab.Header = tab.Tag =Title = string.IsNullOrEmpty(Title) ? "new Course" : Title;
+            }
+        }
+        private void Vm_RenameTabQuizz(Quiz quizz, string Title)
+        {
+            var tab = tabControl.SelectedItem as TabItem;
+            if (tab != null)
+            {
+                tab.Header = tab.Tag = Title = string.IsNullOrEmpty(Title) ? "new Quizz" : Title;
             }
         }
     }

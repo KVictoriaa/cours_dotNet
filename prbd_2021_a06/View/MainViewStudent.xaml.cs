@@ -48,5 +48,27 @@ namespace prbd_2021_a06.View
                 }
             }
         }
+        private void Vm_DiplayQuizzStudent(Quiz quizz, bool isNew)
+        {
+           
+
+            if (quizz != null)
+            {
+
+                Console.WriteLine("hello student");
+                var tab = tabControl.FindByTag(quizz.Title);
+                if (tab == null)
+                    tabControl.Add(
+                        new AnswerQuizView(quizz, isNew),
+                        isNew ? "<new Quizz>" : quizz.Title
+                     );
+
+                else
+                {
+
+                    tabControl.SetFocus(tab);
+                }
+            }
+        }
     }
 }

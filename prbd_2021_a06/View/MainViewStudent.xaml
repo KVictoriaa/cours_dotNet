@@ -9,10 +9,10 @@
         xmlns:p="clr-namespace:prbd_2021_a06.Properties"
         mc:Ignorable="d"
         
-        Title="MainViewStudent"
+        Title="{Binding Title}"
         Height="768" Width="1024">
     <Window.DataContext>
-        <vm:MainViewModelStudent x:Name="vm" OnLogout="Vm_OnLogout" DisplayCourse="Vm_DiplayCourse"/>
+        <vm:MainViewModelStudent x:Name="vm" OnLogout="Vm_OnLogout" DisplayCourse="Vm_DiplayCourse"  DiplayQuizzStudent="Vm_DiplayQuizzStudent"/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>

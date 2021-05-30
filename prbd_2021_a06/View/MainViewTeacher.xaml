@@ -7,9 +7,9 @@
         xmlns:vm="clr-namespace:prbd_2021_a06.ViewModel"
         xmlns:p="clr-namespace:prbd_2021_a06.Properties"
         mc:Ignorable="d"
-        Title="MainViewTeacher" Height="768" Width="1024">
+        Title="{Binding Title}" Height="768" Width="1024">
     <Window.DataContext>
-        <vm:MainViewModelTeacher x:Name="vm" OnLogout="Vm_OnLogout" DisplayCourse="Vm_DiplayCourse"/>
+        <vm:MainViewModelTeacher x:Name="vm" OnLogout="Vm_OnLogout" DisplayCourse="Vm_DiplayCourse" DisplayQuizz="Vm_DiplayQuizz" RenameTab="Vm_RenameTab" CloseTab="Vm_CloseTab" RenameTabQuizz="Vm_RenameTabQuizz"/>
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -27,7 +27,6 @@
             <TabItem x:Name="coursTab" Header="Cours" Tag="Cors">
                 <ContentControl>
                     <vw:CourseView/>
-
                 </ContentControl>
             </TabItem>
         </f:MyTabControl>
