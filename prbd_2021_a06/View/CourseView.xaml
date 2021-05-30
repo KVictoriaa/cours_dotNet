@@ -1,4 +1,6 @@
-﻿<f:UserControlBase  xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework" x:Class="prbd_2021_a06.View.CourseView"
+﻿<f:UserControlBase 
+    xmlns:f="clr-namespace:PRBD_Framework;assembly=PRBD_Framework"
+    x:Class="prbd_2021_a06.View.CourseView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -28,7 +30,10 @@
             <TextBox Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}" FontSize="14" />
             <Button Content="Clear" Grid.Column="1" Command="{Binding ClearFilter}" Margin="5,0,0,0" />
         </Grid>
-        <ListView x:Name="listView" ItemsSource="{Binding Courses}" Grid.Row="2" BorderBrush="Transparent" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="ListView_MouseDoubleClick" >
+        <ListView x:Name="listView" ItemsSource="{Binding Courses}" Grid.Row="2" BorderBrush="Transparent"
+                  SelectionMode="Single"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  MouseDoubleClick="ListView_MouseDoubleClick" >
             <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding DisplayMemberDetails}" CommandParameter="{Binding ElementName=listView, Path=SelectedItem}"/>

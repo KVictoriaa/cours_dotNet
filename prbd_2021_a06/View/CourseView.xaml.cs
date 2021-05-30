@@ -32,16 +32,17 @@ namespace prbd_2021_a06.View
             if (c.GetStudentCourseByUser != null && c.GetStudentCourseByUser.IsValide || App.CurrentUser.IsTeacher)
             {
                 vm.DisplayCourseDetails.Execute(listView.SelectedItem);
-                Console.WriteLine("on est entré");
+               
             }
             else
             {
-                Console.WriteLine("vous n'êtes pas inscrit a ce cours");
+                
             }
            
         }
         
-        
+
+
     }
     
 }

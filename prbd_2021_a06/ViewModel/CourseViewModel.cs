@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using prbd_2021_a06.Model;
 using System.Windows;
+using System.ComponentModel;
 
 namespace prbd_2021_a06.ViewModel
 {
@@ -28,10 +29,27 @@ namespace prbd_2021_a06.ViewModel
             get => filter;
             set => SetProperty<string>(ref filter, value, OnRefreshData);
         }
+        private User teacher;
+        public User Teacher { get => teacher; set => SetProperty(ref teacher, value, OnRefreshData); }
 
         public CourseViewModel() : base()
         {
-            Courses = new ObservableCollection<Course>(App.Context.Courses);
+            if(!App.CurrentUser.IsTeacher)
+            {
+                Courses = new ObservableCollection<Course>(App.Context.Courses);
+
+            }
+            else
+            {
+                if (App.CurrentUser.IsTeacher)
+                {
+                    this.Teacher = CurrentUser;
+
+                    Courses.RefreshFromModel(Teacher.GetReceivedAndVisibleMessages(CurrentUser));
+
+                }
+              
+            }
           
             //Registration = new RelayCommand();
 
@@ -42,11 +60,20 @@ namespace prbd_2021_a06.ViewModel
 
             NewCourse = new RelayCommand(() => { NotifyColleagues(AppContext.MSG_NEW_COURSE); });
 
-           
+            App.Register(this, AppContext.MSG_COURSES, () =>
+            {
+                Courses = new ObservableCollection<Course>(App.Context.Courses);
+            });
 
-            //this.isTeacher = App.CurrentUser.IsTeacher
+            if (App.CurrentUser.IsTeacher)
+            {
+                this.Teacher = CurrentUser;
+            }
+
+                
 
         }
+
         public ICommand Registration { get; set; }
         public ICommand DisplayCourseDetails { get; set; }
         public ICommand ClearFilter { get; set; }
@@ -63,6 +90,9 @@ namespace prbd_2021_a06.ViewModel
                 return Visibility.Visible;
             }
         }
+        
+        public ICollectionView CourseTeacher => Courses.GetCollectionView(nameof(Courses));
+
         protected override void OnRefreshData()
         {
             IQueryable<Course> courses = string.IsNullOrEmpty(Filter) ? Course.GetAll() : Course.GetFiltered(Filter);
@@ -70,6 +100,7 @@ namespace prbd_2021_a06.ViewModel
                                     Filter)    
                                   select c;
             Courses = new ObservableCollection<Course>(filteredCourses);
+            
         }
     }
 }
