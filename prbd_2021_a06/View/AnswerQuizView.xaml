@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:prbd_2021_a06.View" 
         xmlns:vm="clr-namespace:prbd_2021_a06.ViewModel"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        d:DesignWidth="800" d:DesignHeight="450"
+       >
     <UserControl.DataContext>
         <vm:AnswerQuizViewModel x:Name="vm" />
     </UserControl.DataContext>
@@ -19,6 +20,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" MinHeight="119"/>
             <RowDefinition Height="326.349" />
+           
+
         </Grid.RowDefinitions>
         <!-- ROW #1 -->
         <Grid Margin="5,5,5,0" Grid.RowSpan="1" Grid.Column="1" VerticalAlignment="Top" Height="164">
@@ -48,12 +51,16 @@
                 <TextBlock x:Name="Course" Text="{Binding Course, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Grid.Row="4" Height="18" Margin="79,0,0,10"/>
             </Grid>
         </Grid>
+       
+            
+        
         <Grid Grid.Row="1" Margin="1,5,0,5" Grid.Column="1">
+             <ScrollViewer>
             <ListView x:Name="listView" ItemsSource="{Binding QuestionQuizzs}" BorderBrush="Transparent" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True" 
-                      Height="Auto" Margin="0,0,0,59" >
+                      Height="Auto" Margin="0,0,0,59" IsEnabled="{Binding IsEnabled, Mode=OneWay}">
 
-                <ListView.ItemTemplate >
-                    <DataTemplate >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
                         <StackPanel Width="auto">
                             <TextBlock FontSize="10" FontWeight="Normal" Width="auto" TextAlignment="Center" Text="{Binding Question.Enonce}"/>
                             <ListView x:Name="listView2" ItemsSource="{Binding Question.Propositions}" Grid.Row="1" 
@@ -63,27 +70,48 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate >
                                         <StackPanel Width="auto" VerticalAlignment="Stretch" HorizontalAlignment="Left" Orientation="Horizontal">
-                                            <RadioButton GroupName="etudiant" Visibility="{Binding  OneAnswer , Mode=OneTime}"
-                                                         HorizontalAlignment="Left" VerticalAlignment="Stretch"  />
+                                            <RadioButton GroupName="{Binding Question.Id}" Visibility="{Binding  OneAnswer , Mode=OneTime}"
+                                                         HorizontalAlignment="Left" VerticalAlignment="Stretch"  Content="{Binding Body}" IsChecked="{Binding IsCheck}" />
                                             <CheckBox Visibility="{Binding ManyAnswer , Mode=OneTime}"
-                                                      Margin="10,0,10,0" HorizontalAlignment="Left"  />
-                                            <TextBlock FontSize="10" FontWeight="Normal" Width="auto"
-                                                       TextAlignment="Center" Text="{Binding Body}" 
-                                                       HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+                                                      Margin="10,0,10,0" HorizontalAlignment="Left"  Content="{Binding Body}" IsChecked="{Binding IsCheck}"/>
+                        
                                         </StackPanel>
 
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
+                                
                             </ListView>
+                                <ListView x:Name="listView3" ItemsSource="{Binding Question.CorrectPropos}" Visibility="{Binding CorrectPropos , ElementName=vm}"  Grid.Row="1" 
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"   
+                                      Background="DarkGreen" Opacity="0.7" Foreground="White"
+                                      IsSynchronizedWithCurrentItem="True" VerticalAlignment="Stretch">
+
+                                <ListView.ItemTemplate>
+                                    <DataTemplate >
+                                        <StackPanel Width="auto" VerticalAlignment="Stretch" HorizontalAlignment="Left" Orientation="Horizontal">
+                                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Stretch"  Text="{Binding Body}"/>
+
+                                        </StackPanel>
+
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+
+                            </ListView>
+                            <StackPanel>
+                                    
+                                </StackPanel>
                         </StackPanel>
 
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,92">
+            </ListView></ScrollViewer>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,92" Grid.Row="3">
                 <Button Content="Save" HorizontalAlignment="Right" Command="{Binding SaveQuestion}" 
+                        VerticalAlignment="Bottom" Width="75" Grid.Row="0" Margin="5"/>
+                <Button Content="Cancel" HorizontalAlignment="Right" Command="{Binding CancelQuestion}" 
                         VerticalAlignment="Bottom" Width="75" Grid.Row="0" Margin="5"/>
             </StackPanel>
         </Grid>
+        
     </Grid>
 </f:UserControlBase>
