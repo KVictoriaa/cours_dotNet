@@ -19,7 +19,7 @@ namespace prbd_2021_a06.ViewModel {
         public ICommand LoginTeacher { get; set; }
         public ICommand LoginStudent { get; set; }
         private String email;
-        private string emailT = "boris@epfc.eu";
+        private string emailT = "benoit@epfc.eu";
         private string emailS = "hello@bonjour";
         public string Email { get => email; set => SetProperty<string>(ref email, value, () => Validate()); }
         public string EmailT { get => emailT; set => SetProperty<string>(ref emailT, value, () => Validate()); }
@@ -50,14 +50,14 @@ namespace prbd_2021_a06.ViewModel {
         }
 
         private void LoginActionStudent() {
-            if (Validate()) {
+            //if (Validate()) {
 
                 var user = (from u in App.Context.Users
                             where u.Email.Equals(EmailS)
                             select u).FirstOrDefault();
                 Login(user);
                 OnLoginSuccess?.Invoke();
-            }
+            //}
         }
 
         private void LoginActionTeacher() {
