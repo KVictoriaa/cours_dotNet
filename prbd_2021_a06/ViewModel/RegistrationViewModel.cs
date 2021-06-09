@@ -5,12 +5,15 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace prbd_2021_a06.ViewModel {
-    public class RegistrationViewModel : ViewModelCommon {
-       
+namespace prbd_2021_a06.ViewModel
+{
+    public class RegistrationViewModel : ViewModelCommon
+    {
+
         private ObservableCollection<StudentCourseHelper> studentcourses;
         private ObservableCollection<StudentHelper> students = new ObservableCollection<StudentHelper>();
-        public ObservableCollection<StudentCourseHelper> Studentcourses {
+        public ObservableCollection<StudentCourseHelper> Studentcourses
+        {
             get => studentcourses;
             set => SetProperty<ObservableCollection<StudentCourseHelper>>(ref studentcourses, value);
         }
@@ -18,69 +21,81 @@ namespace prbd_2021_a06.ViewModel {
 
         private ObservableCollection<StudentCourseHelper> registerStudentCourseSelected = new ObservableCollection<StudentCourseHelper>();
         private ObservableCollection<StudentHelper> unRegisterStudentCoursesSelected = new ObservableCollection<StudentHelper>();
-        public ObservableCollection<StudentCourseHelper> RegisterStudentCoursesSelected {
+        public ObservableCollection<StudentCourseHelper> RegisterStudentCoursesSelected
+        {
             get => registerStudentCourseSelected;
             set => SetProperty<ObservableCollection<StudentCourseHelper>>(ref registerStudentCourseSelected, value);
         }
 
-        public ObservableCollection<StudentHelper> UnRegisterStudentCoursesSelected {
+        public ObservableCollection<StudentHelper> UnRegisterStudentCoursesSelected
+        {
             get => unRegisterStudentCoursesSelected;
             set => SetProperty<ObservableCollection<StudentHelper>>(ref unRegisterStudentCoursesSelected, value);
         }
-        
+
         private bool showLeft = false;
-        public bool ShowLeft {
+        public bool ShowLeft
+        {
             get => showLeft;
             set => SetProperty<bool>(ref showLeft, value);
         }
 
         private bool showDoubleLeft = false;
-        public bool ShowDoubleLeft {
+        public bool ShowDoubleLeft
+        {
             get => showDoubleLeft;
             set => SetProperty<bool>(ref showDoubleLeft, value);
         }
 
-        private bool showRight  = false;
-        public bool ShowRight {
+        private bool showRight = false;
+        public bool ShowRight
+        {
             get => showRight;
             set => SetProperty<bool>(ref showRight, value);
         }
 
         private bool showDoubleRight = false;
-        public bool ShowDoubleRight {
+        public bool ShowDoubleRight
+        {
             get => showDoubleRight;
             set => SetProperty<bool>(ref showDoubleRight, value);
         }
 
 
-        public ObservableCollection<StudentHelper> Students {
+        public ObservableCollection<StudentHelper> Students
+        {
             get => students;
             set => SetProperty<ObservableCollection<StudentHelper>>(ref students, value);
         }
         private int courseId;
-        public int CourseId {
+        public int CourseId
+        {
             get => courseId;
             set => SetProperty<int>(ref courseId, value, InitList);
         }
         private string filter;
-        public string Filter {
+        public string Filter
+        {
             get => filter;
             set => SetProperty<string>(ref filter, value, OnRefreshData);
         }
 
 
 
-        public void RefrechLeft() {
-            ShowLeft = unRegisterStudentCoursesSelected!=null &&  unRegisterStudentCoursesSelected.Count == 1;
-            ShowDoubleLeft = unRegisterStudentCoursesSelected!=null &&  unRegisterStudentCoursesSelected.Count > 1;
+        public void RefrechLeft()
+        {
+            ShowLeft = unRegisterStudentCoursesSelected != null && unRegisterStudentCoursesSelected.Count == 1;
+            ShowDoubleLeft = unRegisterStudentCoursesSelected != null && unRegisterStudentCoursesSelected.Count > 1;
         }
-        public void RefrechRight() {
-            ShowRight = RegisterStudentCoursesSelected != null &&  RegisterStudentCoursesSelected.Count == 1;
-            ShowDoubleRight = RegisterStudentCoursesSelected != null &&  RegisterStudentCoursesSelected.Count > 1;
+        public void RefrechRight()
+        {
+            ShowRight = RegisterStudentCoursesSelected != null && RegisterStudentCoursesSelected.Count == 1;
+            ShowDoubleRight = RegisterStudentCoursesSelected != null && RegisterStudentCoursesSelected.Count > 1;
         }
 
 
-        public RegistrationViewModel() : base() {
+        public RegistrationViewModel() : base()
+        {
 
             //Registration = new RelayCommand();
 
@@ -100,23 +115,29 @@ namespace prbd_2021_a06.ViewModel {
         public ICommand ClearFilterCommand { get; set; }
         public ICommand ChangeStatusCommand { get; set; }
 
-        
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="unregister"></param>
-        public void OnPermute(bool unregister ) {
+        public void OnPermute(bool unregister)
+        {
             // supprimer les utilisateur à cours données
-            if (unregister && RegisterStudentCoursesSelected.Count > 0) {
-                foreach(var studentCourse in RegisterStudentCoursesSelected) {
+            if (unregister && RegisterStudentCoursesSelected.Count > 0)
+            {
+                foreach (var studentCourse in RegisterStudentCoursesSelected)
+                {
                     StudentCourse.UnRegister(studentCourse.StudentCourseId);
                 }
                 RegisterStudentCoursesSelected.Clear();
                 RegisterStudentCoursesSelected = RegisterStudentCoursesSelected;
                 RefrechRight();
-            } else if(UnRegisterStudentCoursesSelected.Count > 0) { // ajouter les utilisateurs selectionnés au cours
-                foreach (var student in UnRegisterStudentCoursesSelected) {
+            }
+            else if (UnRegisterStudentCoursesSelected.Count > 0)
+            { // ajouter les utilisateurs selectionnés au cours
+                foreach (var student in UnRegisterStudentCoursesSelected)
+                {
                     StudentCourse.Register(student.StudentId, CourseId);
                 }
                 UnRegisterStudentCoursesSelected.Clear();
@@ -127,9 +148,12 @@ namespace prbd_2021_a06.ViewModel {
 
         }
 
-        public Visibility PermissionSeeView {
-            get {
-                if (!(App.CurrentUser.IsTeacher)) {
+        public Visibility PermissionSeeView
+        {
+            get
+            {
+                if (!(App.CurrentUser.IsTeacher))
+                {
                     return Visibility.Collapsed;
                 }
                 return Visibility.Visible;
@@ -137,8 +161,10 @@ namespace prbd_2021_a06.ViewModel {
         }
 
 
-        private void SetStudentCourseHelpers() {
-            var list =  App.Context.StudentCourses.Where(sc => sc.Course.Id == CourseId).Select(sc => new StudentCourseHelper() {
+        private void SetStudentCourseHelpers()
+        {
+            var list = App.Context.StudentCourses.Where(sc => sc.Course.Id == CourseId).Select(sc => new StudentCourseHelper()
+            {
                 CourseId = sc.Course.Id,
                 StudentName = $"{sc.Student.FirstName} {sc.Student.LastName}",
                 ButtonName = sc.IsActif ? "Desactivate" : "Activate",
@@ -149,14 +175,16 @@ namespace prbd_2021_a06.ViewModel {
             Studentcourses = new ObservableCollection<StudentCourseHelper>(list);
         }
 
-        private void InitList() {
+        private void InitList()
+        {
             // notifier la liste des student register (gauche)
             SetStudentCourseHelpers();
             // notifier la liste des student unregister (droite)
             OnRefreshData();
         }
 
-        public void OnChangeStatus(int studentCourseId) {
+        public void OnChangeStatus(int studentCourseId)
+        {
             var st = StudentCourse.UpdateStatus(studentCourseId);
             // notifier la liste des student register (gauche)
             SetStudentCourseHelpers();
@@ -165,17 +193,19 @@ namespace prbd_2021_a06.ViewModel {
         }
 
 
-        protected override void OnRefreshData() {
+        protected override void OnRefreshData()
+        {
             IQueryable<StudentHelper> filterStudents = User.GetAllStudentNotRegister(string.IsNullOrEmpty(Filter) ? "" : Filter, CourseId);
 
             Students.Clear();
-          //  var l = filterStudents.ToList();
+            //  var l = filterStudents.ToList();
             Students = new ObservableCollection<StudentHelper>(filterStudents);
         }
 
     }
 
-    public class StudentCourseHelper : ViewModelCommon {
+    public class StudentCourseHelper : ViewModelCommon
+    {
         private string isActif;
         private string buttonName;
         private string studentName;
@@ -186,49 +216,59 @@ namespace prbd_2021_a06.ViewModel {
 
 
 
-        public string IsActif {
+        public string IsActif
+        {
             get => isActif;
             set => SetProperty<string>(ref isActif, value);
         }
 
-        public string ButtonName {
+        public string ButtonName
+        {
             get => buttonName;
             set => SetProperty<string>(ref buttonName, value);
         }
-        public virtual string StudentName {
+        public virtual string StudentName
+        {
             get => studentName;
             set => SetProperty<string>(ref studentName, value);
         }
-        public virtual int CourseId {
+        public virtual int CourseId
+        {
             get => CourseId;
             set => SetProperty<int>(ref courseId, value);
         }
 
-        public virtual int StudentCourseId {
+        public virtual int StudentCourseId
+        {
             get => studentCourseId;
             set => SetProperty<int>(ref studentCourseId, value);
         }
 
-        protected override void OnRefreshData() {
+        protected override void OnRefreshData()
+        {
 
         }
     }
 
 
-    public class StudentHelper : ViewModelCommon {
+    public class StudentHelper : ViewModelCommon
+    {
         private string studentName;
         private int studentId;
 
-        public virtual string StudentName {
+        public virtual string StudentName
+        {
             get => studentName;
             set => SetProperty<string>(ref studentName, value);
         }
-        public virtual int StudentId {
+        public virtual int StudentId
+        {
             get => studentId;
             set => SetProperty<int>(ref studentId, value);
         }
 
-        protected override void OnRefreshData() {
+        protected override void OnRefreshData()
+        {
 
         }
     }
