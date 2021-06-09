@@ -20,7 +20,7 @@
                  SelectionMode="Single"
                  ScrollViewer.CanContentScroll="True" 
                  Grid.Row="0" Margin="0,5,0,0" 
-                  ItemsSource="{Binding VmCategory.CategoryQuestions}">
+                  ItemsSource="{Binding VmCategory.CategoryCourses}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name">
@@ -60,3 +60,4 @@
         </StackPanel>
     </Grid>
 </f:UserControlBase>
+
