@@ -50,8 +50,10 @@ namespace prbd_2021_a06.ViewModel
                 }
               
             }
-          
-            //Registration = new RelayCommand();
+
+            
+            Registration = new RelayCommand<Course>((course) => Subscribe(course, true));
+            UnRegistration = new RelayCommand<Course>((course) => Subscribe(course, false));
 
             DisplayCourseDetails = new RelayCommand<Course>(courses => {
                 NotifyColleagues(AppContext.MSG_DISPLAY_COURSE, courses);
@@ -62,7 +64,8 @@ namespace prbd_2021_a06.ViewModel
 
             App.Register(this, AppContext.MSG_COURSES, () =>
             {
-                Courses = new ObservableCollection<Course>(App.Context.Courses);
+                this.Teacher = CurrentUser;
+                Courses = new ObservableCollection<Course>(Teacher.CoursesForTeacher);
             });
 
             if (App.CurrentUser.IsTeacher)
@@ -73,8 +76,29 @@ namespace prbd_2021_a06.ViewModel
                 
 
         }
+        public void Subscribe(Course course, bool subscribe)
+        {
+            if (subscribe)
+            {
+                var studentCourse = new StudentCourse()
+                {
+                    Course = course,
+                    IsValide = false,
+                    IsActif = false,
+                    Student = App.CurrentUser
+                };
+                studentCourse.Subscribe();
+            }
+            else
+            {
+                StudentCourse.Unsubscribe(App.CurrentUser.Id, course.Id);
+            }
 
+            // Rafraichir la liste àprès une demande d'enregistrement 
+            Courses = new ObservableCollection<Course>(App.Context.Courses);
+        }
         public ICommand Registration { get; set; }
+        public ICommand UnRegistration { get; set; }
         public ICommand DisplayCourseDetails { get; set; }
         public ICommand ClearFilter { get; set; }
         public ICommand NewCourse { get; set; }
@@ -90,7 +114,21 @@ namespace prbd_2021_a06.ViewModel
                 return Visibility.Visible;
             }
         }
-        
+        public Course selectedCourse;
+        public Course SelectedCourse
+        {
+            get
+            {
+
+                return selectedCourse;
+            }
+            set
+            {
+                selectedCourse = value;
+                RaisePropertyChanged(nameof(SelectedCourse));
+                RaisePropertyChanged();
+            }
+        }
         public ICollectionView CourseTeacher => Courses.GetCollectionView(nameof(Courses));
 
         protected override void OnRefreshData()

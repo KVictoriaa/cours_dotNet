@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using prbd_2021_a06.Model;
+using prbd_2021_a06.Properties;
 using PRBD_Framework;
 namespace prbd_2021_a06.ViewModel
 {
@@ -36,9 +37,11 @@ namespace prbd_2021_a06.ViewModel
             get { return Course?.Title; }
             set
             {
+                Console.WriteLine(Title);
                 Course.Title = value;
                 RaisePropertyChanged(nameof(Title));
                 NotifyColleagues(AppContext.MSG_TITLECOURSE_CHANGED, Course);
+                Validate();
             }
         }
 
@@ -58,6 +61,7 @@ namespace prbd_2021_a06.ViewModel
             {
                 Course.MaxStudent = Convert.ToInt32(value);
                 RaisePropertyChanged(nameof(MaxStudent));
+                Validate();
             }
         }
         public string Teacher
@@ -67,13 +71,16 @@ namespace prbd_2021_a06.ViewModel
             {
                 Course.Teacher.LastName = value;
                 RaisePropertyChanged(nameof(Teacher));
+                //Validate();
             }
         }
 
         public CourseViewModelDetails() : base()
         {
-            
-            Save = new RelayCommand(SaveAction, CanSaveAction);
+            if(Validate())
+            {
+                Save = new RelayCommand(SaveAction, CanSaveAction);
+            }
             Cancel = new RelayCommand(CancelAction, CanCancelAction);
             Delete = new RelayCommand(DeleteAction, () => !IsNew);
             
@@ -101,17 +108,7 @@ namespace prbd_2021_a06.ViewModel
                 return Visibility.Visible;
             }
         }
-       /* public Visibility AnswerQuizz
-        {
-            get
-            {
-                if (!(App.CurrentUser.IsTeacher) && (App.Context.Courses.GetQuizBytime.Debut < DateTime.Now ))
-                {
-                    return Visibility.Collapsed;
-                }
-                return Visibility.Visible;
-            }
-        }*/
+       
         private void SaveAction()
         {
             if (IsNew)
@@ -154,7 +151,8 @@ namespace prbd_2021_a06.ViewModel
         {
             CancelAction();
             Course.Delete();
-            NotifyColleagues(AppContext.MSG_COURSE_CHANGED, Course);
+            //NotifyColleagues(AppContext.MSG_COURSE_CHANGED, Course);
+            NotifyColleagues(AppContext.MSG_COURSES);
             NotifyColleagues(AppContext.MSG_CLOSE_TAB, Course);
         }
 
@@ -162,7 +160,34 @@ namespace prbd_2021_a06.ViewModel
         public ICommand Save { get; set; }
         public ICommand Cancel { get; set; }
         public ICommand Delete { get; set; }
+        public override bool Validate()
+        {
+            ClearErrors();
 
+            var course = (from u in App.Context.Courses
+                        where u.Title.Equals(Title)
+                        select u).FirstOrDefault();
+
+            if(IsNew)
+            {
+                if (string.IsNullOrEmpty(Title))
+                {
+                    AddError(nameof(Title), Resources.Error_Required);
+                }
+
+
+                if (MaxStudent == 0)
+                {
+                    AddError(nameof(MaxStudent), Resources.Error_MaxStudent);
+                }
+            }
+            
+            
+            
+
+            RaiseErrors();
+            return !HasErrors;
+        }
         protected override void OnRefreshData()
         {
            
