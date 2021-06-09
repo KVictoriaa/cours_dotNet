@@ -34,29 +34,29 @@
 
         </Grid.RowDefinitions>
         <Label x:Name="label" Content="Email" VerticalAlignment="Center" Padding="5" Height="26" />
-        <f:ValidatedField VerticalAlignment="Center" Height="18" Margin="42,0,0,0" Grid.Column="1">
+        <f:ValidatedField VerticalAlignment="Center"  Grid.Column="1">
             <TextBox x:Name="txtEmail" TextWrapping="Wrap" Grid.Column="1" 
                      Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" GotFocus="txtEmail_GotFocus" TextChanged="txtEmail_TextChanged"/>
         </f:ValidatedField>
         <Label x:Name="label1" Content="Nom"  Grid.Row="1" VerticalAlignment="Center" Padding="5" Height="26" />
-        <f:ValidatedField  Grid.Row="1" VerticalAlignment="Center" Height="18" Margin="42,0,0,0" Grid.Column="1">
-            <TextBox x:Name="txtNom" TextWrapping="Wrap" Grid.Column="2" 
+        <f:ValidatedField  Grid.Row="1" VerticalAlignment="Center"  Grid.Column="2">
+            <TextBox x:Name="txtNom" TextWrapping="Wrap" Grid.Row="1" Grid.Column="2" 
                      Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" GotFocus="txtFirstName_GotFocus"/>
         </f:ValidatedField>
         <Label x:Name="label2" Content="Prenom"  Grid.Row="2" VerticalAlignment="Center" Padding="5" Height="26" />
-        <f:ValidatedField  Grid.Row="2" VerticalAlignment="Center" Height="18" Margin="42,0,0,0" Grid.Column="1">
+        <f:ValidatedField  Grid.Row="2" VerticalAlignment="Center"  Grid.Column="1">
             <TextBox x:Name="txtPrenom" TextWrapping="Wrap" Grid.Column="3" 
-                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" GotFocus="txtLastName_GotFocus"/>
+                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" GotFocus="txtLastName_GotFocus"/>
         </f:ValidatedField>
         <Label Content="Mot de passe" Grid.Row="3" VerticalAlignment="Center" Padding="5" Height="26"/>
-        <f:ValidatedField Grid.Row="3" VerticalAlignment="Center" Height="18" Margin="42,0,0,0" Grid.Column="1">
+        <f:ValidatedField Grid.Row="3" VerticalAlignment="Center"  Grid.Column="1">
             <PasswordBox x:Name="txtPassword"
                      f:PasswordHelper.Attach="True"
                      f:PasswordHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
                      GotFocus="txtPassword_GotFocus"/>
         </f:ValidatedField>
         <Label Content="Confirm passe" Grid.Row="4" VerticalAlignment="Center" Padding="5" Height="26"/>
-        <f:ValidatedField Grid.Row="4" Grid.Column="1" VerticalAlignment="Top" Height="18" Margin="42,0,0,0" Grid.RowSpan="2">
+        <f:ValidatedField Grid.Row="4" Grid.Column="1" VerticalAlignment="Top"  Grid.RowSpan="2">
             <PasswordBox x:Name="txtConfirmPassword"
                      f:PasswordHelper.Attach="True"
                      f:PasswordHelper.Password="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged}" 
