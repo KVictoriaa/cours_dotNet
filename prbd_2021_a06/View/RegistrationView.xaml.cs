@@ -21,13 +21,15 @@ namespace prbd_2021_a06.View {
     /// <summary>
     /// Logique d'interaction pour RegistrationView.xaml
     /// </summary>
-    public partial class RegistrationView : UserControlBase {
+    public partial class RegistrationView : UserControlBase
+    {
 
         public RegistrationViewModel VmRegistration { get; set; }
 
-        
 
-        public RegistrationView() {
+
+        public RegistrationView()
+        {
             InitializeComponent();
             VmRegistration = new RegistrationViewModel();
             DataContext = this;
@@ -39,19 +41,22 @@ namespace prbd_2021_a06.View {
            DependencyProperty.Register(" Course", typeof(Course), typeof(RegistrationView), new
               PropertyMetadata(null, new PropertyChangedCallback(OnCoursePropertyChanged)));
 
-   
-        public Course Course {
+
+        public Course Course
+        {
             get { return (Course)GetValue(CourseProperty); }
             set { SetValue(CourseProperty, value); }
         }
 
         private static void OnCoursePropertyChanged(DependencyObject d,
-        DependencyPropertyChangedEventArgs e) {
+        DependencyPropertyChangedEventArgs e)
+        {
             RegistrationView UserControl1Control = d as RegistrationView;
             UserControl1Control.OnCoursePropertyChanged(e);
         }
 
-        private void OnCoursePropertyChanged(DependencyPropertyChangedEventArgs e) {
+        private void OnCoursePropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
             //todo
             var course = (Course)e.NewValue;
 
@@ -59,27 +64,32 @@ namespace prbd_2021_a06.View {
 
         }
 
-        private void btnAction_Click(object sender, RoutedEventArgs e) {
+        private void btnAction_Click(object sender, RoutedEventArgs e)
+        {
             Button b = sender as Button;
             StudentCourseHelper model = b.CommandParameter as StudentCourseHelper;
             // MessageBox.Show(model.StudentName);
             VmRegistration.ChangeStatusCommand.Execute(model.StudentCourseId);
         }
 
-        private void btndoubleright_Click(object sender, RoutedEventArgs e) {
+        private void btndoubleright_Click(object sender, RoutedEventArgs e)
+        {
             VmRegistration.OnPermute(true);
         }
 
-        private void btnright_Click(object sender, RoutedEventArgs e) {
+        private void btnright_Click(object sender, RoutedEventArgs e)
+        {
             btndoubleright_Click(sender, e);
         }
 
-        private void btndoubleleft_Click(object sender, RoutedEventArgs e) {
+        private void btndoubleleft_Click(object sender, RoutedEventArgs e)
+        {
             VmRegistration.OnPermute(false);
         }
 
-        private void btnleft_Click(object sender, RoutedEventArgs e) {
-            btndoubleleft_Click(sender,  e);
+        private void btnleft_Click(object sender, RoutedEventArgs e)
+        {
+            btndoubleleft_Click(sender, e);
         }
 
         /// <summary>
@@ -87,16 +97,19 @@ namespace prbd_2021_a06.View {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void lvUserUnregister_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void lvUserUnregister_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             VmRegistration.UnRegisterStudentCoursesSelected.Clear();
             ListView b = sender as ListView;
             var models = b.SelectedItems;
-            foreach (var model in models) {
+            foreach (var model in models)
+            {
                 var sch = model as StudentHelper;
                 VmRegistration.UnRegisterStudentCoursesSelected.Add(sch);
             }
 
-            if (models == null || models.Count == 0 && b.SelectedItem != null) {
+            if (models == null || models.Count == 0 && b.SelectedItem != null)
+            {
                 VmRegistration.UnRegisterStudentCoursesSelected.Add(b.SelectedItem as StudentHelper);
             }
 
@@ -109,14 +122,17 @@ namespace prbd_2021_a06.View {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void lvUserregister_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void lvUserregister_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             VmRegistration.RegisterStudentCoursesSelected.Clear();
             ListView b = sender as ListView;
             var models = b.SelectedItems;
-            if(models == null || models.Count == 0 && b.SelectedItem !=null) {
+            if (models == null || models.Count == 0 && b.SelectedItem != null)
+            {
                 VmRegistration.RegisterStudentCoursesSelected.Add(b.SelectedItem as StudentCourseHelper);
             }
-            foreach(var model in models) {
+            foreach (var model in models)
+            {
                 var sch = model as StudentCourseHelper;
                 //MessageBox.Show(sch.StudentName);
                 VmRegistration.RegisterStudentCoursesSelected.Add(sch);
@@ -124,7 +140,8 @@ namespace prbd_2021_a06.View {
             VmRegistration.RefrechRight();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
             VmRegistration.ClearFilterCommand.Execute(null);
         }
     }
