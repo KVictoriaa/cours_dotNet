@@ -20,26 +20,54 @@ namespace prbd_2021_a06.Model
         public string Password { get; set; }
         public string Email { get; set; }
         public Role Role { get; set; } = Role.Student;
+        public string PicturePath { get; set; }
+
         public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new HashSet<StudentCourse>();
 
         [NotMapped]
         public IEnumerable<Course> CoursesForStudent { get => StudentCourses.Select(sc => sc.Course); }
         public virtual ICollection<Course> CoursesForTeacher { get; set; } = new HashSet<Course>();
-        public User() { }
-        public User(
-            string LastName,
-            string FirstName,
-            string Password,
-            string Email,
-            Role Role = Role.Student
+        public string AbsolutePicturePath
+        {
+            get { return PicturePath != null ? App.IMAGE_PATH + "\\" + PicturePath : null; }
+        }
 
-        ) {
+        //public User() { }
+        //public User(
+        //string LastName,
+        //    string FirstName,
+        //    string Password,
+        //    string Email,
+        //    Role Role = Role.Student
+            
+
+        //) {
+
+        //    this.LastName = LastName;
+        //    this.FirstName = FirstName;
+        //    this.Password = Password;
+        //    this.Email = Email;
+        //    this.Role = Role;
+           
+        //}
+        public User(
+                string LastName,
+                string FirstName,
+                string Password,
+                string Email,
+                string PicturePath = null,
+                Role Role = Role.Student
+                
+
+            )
+        {
 
             this.LastName = LastName;
             this.FirstName = FirstName;
             this.Password = Password;
             this.Email = Email;
             this.Role = Role;
+            this.PicturePath = PicturePath;
         }
 
         public override string ToString() {

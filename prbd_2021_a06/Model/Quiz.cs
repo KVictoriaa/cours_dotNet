@@ -14,8 +14,8 @@ namespace prbd_2021_a06.Model
     {
         [Key]
         public int Id { get; set; }
-        public DateTime Debut { get; set; }
-        public DateTime Fin { get; set; }
+        public DateTime Debut { get; set; } = DateTime.Today;
+        public DateTime Fin { get; set; } = DateTime.Today;
         public string Title {get;set; }
         public virtual ICollection<QuestionQuiz> QuestionQuizzes { get; set; } = new HashSet<QuestionQuiz>();
         [NotMapped]
@@ -70,29 +70,29 @@ namespace prbd_2021_a06.Model
             Context.Quizzes.Remove(this);
             Context.SaveChanges();
         }
-        public Visibility PermissionAddQuizz
+        [NotMapped]
+        public bool IsEnabled
         {
             get
             {
-                if (!(App.CurrentUser.IsTeacher))
-                {
-                    return Visibility.Collapsed;
-                }
-                return Visibility.Visible;
+
+
+                var studentCourse = (from u in App.Context.StudentCourses
+                                     where u.Student.Equals(App.CurrentUser) && u.Course.Equals(Course)
+                                     select u).FirstOrDefault();
+
+                var anwers = (from a in App.Context.AnswerQuestions
+                              where a.StudentCourse.Id == studentCourse.Id 
+                              //a.QuestionQuiz.Id == qq.Id
+                              select a).Select(a => a.QuestionQuiz.Quiz).ToList();
+                Console.WriteLine(!anwers.Contains(this));
+                Console.WriteLine( Fin > DateTime.Now);
+                return  Fin < DateTime.Now && anwers.Contains(this);
+
             }
         }
         
-        public Visibility AnswerQuizz
-        {
-            get
-            {
-                if (!(App.CurrentUser.IsTeacher) && (Debut > DateTime.Now))
-                {
-                    return Visibility.Collapsed;
-                }
-                return Visibility.Visible;
-            }
-        }
+        
         public override string ToString()
         {
             //string str = "Cours : ";

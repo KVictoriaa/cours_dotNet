@@ -26,9 +26,11 @@ namespace prbd_2021_a06.Model
         public virtual ICollection<QuestionQuiz> QuestionQuizzes { get; set; } = new HashSet<QuestionQuiz>();
 
         [NotMapped]
-        public IEnumerable<Category> Categories { get => CategoryQuestions.Select(sc => sc.Categories); }
+        public IEnumerable<Category> Categories { get => CategoryQuestions.Select(sc => sc.Category); }
         [NotMapped]
         public IEnumerable<Quiz> Quizzes { get => QuestionQuizzes.Select(sc => sc.Quiz); }
+        [NotMapped]
+        public IEnumerable<Proposition> CorrectPropos { get => Propositions.Where(sc => sc.IsCorrect); }
 
         public Question (
             string Enonce,
@@ -39,6 +41,8 @@ namespace prbd_2021_a06.Model
             this.Type = Type;
 
         }
+        
+        
         public Question() { }
         [NotMapped]
         public Visibility OneAnswer
@@ -102,10 +106,12 @@ namespace prbd_2021_a06.Model
         }
         public void Delete()
         {
+            //if(Question)
             Context.Questions.Remove(this);
             Context.SaveChanges();
         }
 
+         
         /* public static IQueryable<Question> GetAll(Course course)
          {
              return Context.Messages.OrderByDescending(m => m.DateTime);
