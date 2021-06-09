@@ -29,19 +29,27 @@ namespace prbd_2021_a06.View
         private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Course c = (Course)listView.SelectedItem;
-            if (c.GetStudentCourseByUser != null && c.GetStudentCourseByUser.IsValide || App.CurrentUser.IsTeacher)
+            if (c != null && c.GetStudentCourseByUser != null && c.GetStudentCourseByUser.IsValide || App.CurrentUser.IsTeacher)
             {
                 vm.DisplayCourseDetails.Execute(listView.SelectedItem);
                
             }
-            else
-            {
-                
-            }
            
         }
-        
 
+        private void btnRegistration_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            var model = b.CommandParameter as Course;
+            vm.Registration.Execute(model);
+        }
+
+        private void btnUnRegistration_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            var model = b.CommandParameter as Course;
+            vm.UnRegistration.Execute(model);
+        }
 
     }
     

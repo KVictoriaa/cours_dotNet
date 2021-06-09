@@ -22,28 +22,45 @@ namespace prbd_2021_a06.View
     /// </summary>
     public partial class CourseViewDetails : UserControlBase
     {
-       
-        
 
-        public CourseViewDetails( Course course , bool isNew)
+
+
+        public CourseViewDetails(Course course, bool isNew)
         {
             InitializeComponent();
             vm.Init(course, isNew);
             vr.Course = course;
             vc.Course = course;
             //vq.Course = course;
-            if(App.CurrentUser.IsTeacher)
+            if (App.CurrentUser.IsTeacher)
             {
-            var tab = tabControl.FindByTag(course.Title);
-            if (tab == null)
-                tabControl.Add(
-                    new QuestionMakerView(course),
-                    "Questions"
-                 );
+               
+                var tab = tabControl.FindByTag(course.Title);
+                if (tab == null)
+                    tabControl.Add(
+                        new QuestionMakerView(course),
+                        "Questions"
+                     );
             }
-            
+            var tabQuizz = tabControl.FindByTag(course.Title);
+            if (tabQuizz == null)
+                tabControl.Add(
+                    new QuizzView(course),
+                    "Quizzes"
+                 );
 
+            var tabGrade = tabControl.FindByTag(course.Title);
+            if (tabGrade == null)
+                tabControl.Add(
+                    new GradeView(course),
+                    "Grade"
+                 );
+
+            
         }
+
+
+
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -57,3 +74,4 @@ namespace prbd_2021_a06.View
         }
     }
 }
+

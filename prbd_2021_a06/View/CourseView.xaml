@@ -53,35 +53,43 @@
                             <TextBlock FontSize="10" FontWeight="Normal" Width="80" TextAlignment="Center" Text="{Binding Description}"/>
                             <Label x:Name="label1" Content="Teacher:" HorizontalAlignment="Center" Padding="5"/>
                             <TextBlock FontSize="10" FontWeight="Normal" Width="80" TextAlignment="Center" Text="{Binding Teacher}"/>
-                            <Label x:Name="label" Content="Students:" HorizontalAlignment="Center" Padding="5"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label x:Name="label" Content="Students:" HorizontalAlignment="Center" Padding="5" Visibility="{Binding PermissionAddCourse, Mode=OneTime}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding PermissionAddCourse, Mode=OneTime}">
                                 <DockPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="2">
-                                    <TextBlock Height="auto" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Height="auto" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding PermissionAddCourse, Mode=OneTime}">
                                         <Run Text="{Binding NbActifStudents, Mode=OneTime}"/>
                                         <Run Text="Active"/>
                                     </TextBlock>
                                 </DockPanel>
 
                                 <DockPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="2">
-                                    <TextBlock Height="auto" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center"  >
-                                        <Run Text="{Binding NbPendingStudents, Mode=OneTime}"/>
+                                    <TextBlock Height="auto" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding PermissionAddCourse, Mode=OneTime}" >
+                                        <Run Text="{Binding NbPendingStudents, Mode=OneTime}" />
                                         <Run Text="Pending"/>
                                     </TextBlock>
                                 </DockPanel>
                                 <DockPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="2">
-                                    <TextBlock Height="auto" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center"  >
+                                    <TextBlock Height="auto" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center"  Visibility="{Binding PermissionAddCourse, Mode=OneTime}">
                                         <Run Text="{Binding NbInactifStudents, Mode=OneTime}"/>
                                         <Run Text="Inactif"/>
                                     </TextBlock>
                                 </DockPanel>
                             </StackPanel>
-                            <Button Visibility="{Binding PermissionRegistration, Mode=OneTime}" x:Name="btnRegistration" Content="Registration" Command="{Binding Registration}" HorizontalAlignment="Center" Margin="10,10" Grid.Row="3" Padding="5,1"/>
-                            <Button Visibility="{Binding IsPending, Mode=OneTime}" x:Name="btnUnRegistration" Content="UnRegistration" Command="{Binding UnRegistration}" HorizontalAlignment="Center" Margin="10,10" Grid.Row="3" Padding="5,1"/>
+                            <Button Visibility="{Binding PermissionRegistration, Mode=OneTime}"
+                                    x:Name="btnRegistration" Content="Registration" CommandParameter="{Binding}"
+                                    Click="btnRegistration_Click"
+                                    HorizontalAlignment="Center" Margin="10,10" Grid.Row="3" Padding="5,1"/>
+                            <Button Visibility="{Binding IsPending, Mode=OneTime}"
+                                    x:Name="btnUnRegistration"
+                                    Content="UnRegistration" CommandParameter="{Binding}"
+                                   Click="btnUnRegistration_Click"
+                                    HorizontalAlignment="Center" Margin="10,10" Grid.Row="3" Padding="5,1"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
         <Button Visibility="{Binding PermissionAddCourse, Mode=OneTime}" x:Name="btnCourse"  Content="New Course" Command="{Binding NewCourse}" HorizontalAlignment="Left" Margin="10,10" Grid.Row="3" Padding="5,1"/>
 
     </Grid>
