@@ -126,6 +126,15 @@
   <data name="Error_LengthGreaterEqual3" xml:space="preserve">
     <value>longueur doit être &gt;= 3</value>
   </data>
+  <data name="Error_MaxStudent" xml:space="preserve">
+    <value>le nombre d'étudiant doit-être supérieur à 0</value>
+  </data>
+  <data name="Error_PropositionMany" xml:space="preserve">
+    <value>question avec une plusieurs réponses</value>
+  </data>
+  <data name="Error_PropositionOne" xml:space="preserve">
+    <value>question avec une seule réponse</value>
+  </data>
   <data name="Error_Required" xml:space="preserve">
     <value>Requis</value>
   </data>
@@ -137,5 +146,8 @@
   </data>
   <data name="Menu_Logout" xml:space="preserve">
     <value>Lo_gout</value>
+  </data>
+  <data name="Menu_Profile" xml:space="preserve">
+    <value>Profile</value>
   </data>
 </root>

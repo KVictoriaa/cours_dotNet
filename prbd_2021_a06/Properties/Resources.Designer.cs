@@ -88,6 +88,33 @@ namespace prbd_2021_a06.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à le nombre d&apos;étudiant doit-être supérieur à 0.
+        /// </summary>
+        public static string Error_MaxStudent {
+            get {
+                return ResourceManager.GetString("Error_MaxStudent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à question avec une plusieurs réponses.
+        /// </summary>
+        public static string Error_PropositionMany {
+            get {
+                return ResourceManager.GetString("Error_PropositionMany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à question avec une seule réponse.
+        /// </summary>
+        public static string Error_PropositionOne {
+            get {
+                return ResourceManager.GetString("Error_PropositionOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Requis.
         /// </summary>
         public static string Error_Required {
@@ -120,6 +147,15 @@ namespace prbd_2021_a06.Properties {
         public static string Menu_Logout {
             get {
                 return ResourceManager.GetString("Menu_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Profile.
+        /// </summary>
+        public static string Menu_Profile {
+            get {
+                return ResourceManager.GetString("Menu_Profile", resourceCulture);
             }
         }
     }
