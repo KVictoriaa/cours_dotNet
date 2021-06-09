@@ -36,13 +36,15 @@ namespace prbd_2021_a06.View
             if(course != null)
             {
                 var tab = tabControl.FindByTag(course.Title);
-                if (isNew)
-                    tab = tabControl.FindByTag("<new Course>");
+                
                 if (tab == null)
-                    tabControl.Add(
+                {
+                     tabControl.Add(
                         new CourseViewDetails(course, isNew),
-                        isNew ? "<new Course>" : course.Title
+                        isNew ? "<new Course>" : course.Title, course.Title
                      ) ;
+                }
+                   
                 
                 else
                 {
@@ -58,12 +60,14 @@ namespace prbd_2021_a06.View
                 Console.WriteLine(quizz);
                
                 var tab = tabControl.FindByTag(quizz.Title);
-                if (isNew)
-                    tab = tabControl.FindByTag("<new Quizz>");
+                //if (isNew)
+                //    tab = tabControl.FindByTag("<new Quizz>");
                 if (tab == null)
                     tabControl.Add(
                         new QuizMakerView(quizz, isNew),
-                        isNew ? "<new Quizz>" : quizz.Title
+                        isNew ? "<new Quizz>" : quizz.Title, quizz.Title
+                        
+                      
                      );
                 
                 else
@@ -100,6 +104,20 @@ namespace prbd_2021_a06.View
             {
                 tab.Header = tab.Tag = Title = string.IsNullOrEmpty(Title) ? "new Quizz" : Title;
             }
+        }
+        private void Menu_Profile_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = "Profile";
+            var tab = tabControl.FindByTag(tag);
+            if (tab == null)
+                tabControl.Add(new ProfileView(), Properties.Resources.Menu_Profile, tag);
+            else
+                tabControl.SetFocus(tab);
+        }
+        private void WindowBase_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                Close();
         }
     }
 }

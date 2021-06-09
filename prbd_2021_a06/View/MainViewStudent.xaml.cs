@@ -39,7 +39,7 @@ namespace prbd_2021_a06.View
                 {
                     tabControl.Add(
                         new CourseViewDetails(course, isNew),
-                        isNew ? "<new Course>" : course.Title
+                        isNew ? "<new Course>" : course.Title, course.Title
                      );
                 }
                 else
@@ -60,7 +60,7 @@ namespace prbd_2021_a06.View
                 if (tab == null)
                     tabControl.Add(
                         new AnswerQuizView(quizz, isNew),
-                        isNew ? "<new Quizz>" : quizz.Title
+                        isNew ? "<new Quizz>" : quizz.Title, quizz.Title
                      );
 
                 else
@@ -69,6 +69,15 @@ namespace prbd_2021_a06.View
                     tabControl.SetFocus(tab);
                 }
             }
+        }
+        private void Menu_Profile_Click(object sender, RoutedEventArgs e)
+        {
+            var tag = "Messages";
+            var tab = tabControl.FindByTag(tag);
+            if (tab == null)
+                tabControl.Add(new ProfileView(), Properties.Resources.Menu_Profile, tag);
+            else
+                tabControl.SetFocus(tab);
         }
     }
 }
