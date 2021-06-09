@@ -11,29 +11,30 @@ namespace prbd_2021_a06.View
     /// </summary>
     public partial class QuizzView : UserControlBase
     {
-        public QuizzView()
+        public QuizzView(Course course)
         {
             InitializeComponent();
+            vm.Init(course);
         }
 
-        /*private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            // vm.DisplayMemberDetails.Execute(listView.SelectedItem);
-            Console.WriteLine("Hello World!");
-        }*/
-
+        
         private void QuizzView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //Quiz q = (Quiz)gridQuizz.SelectedItem;
-           if(App.CurrentUser.IsTeacher)
+           
+           Quiz q = (Quiz)gridQuizz.SelectedItem;
+            
+           if (!(App.CurrentUser.IsTeacher)  )
             {
+                if (q.IsEnabled)
+                {
+                    vm.DisplayQuizzStudent.Execute(gridQuizz.SelectedItem);
+                }
                
-                vm.DisplayQuizzDetails.Execute(gridQuizz.SelectedItem);
             }
-          else
+          else 
             {
+                vm.DisplayQuizzDetails.Execute(gridQuizz.SelectedItem);
                 
-                vm.DisplayQuizzStudent.Execute(gridQuizz.SelectedItem);
             }
             
 
@@ -52,17 +53,7 @@ namespace prbd_2021_a06.View
             get { return (Course)GetValue(CourseProperty); }
             set { SetValue(CourseProperty, value); }
         }
-        public Visibility AnswerQuizz
-        {
-            get
-            {
-                if (!(App.CurrentUser.IsTeacher) && (Course.GetQuizBytime.Debut > DateTime.Now))
-                {
-                    return Visibility.Collapsed;
-                }
-                return Visibility.Visible;
-            }
-        }
+       
 
     }
 }
