@@ -49,13 +49,21 @@ namespace prbd_2021_a06.ViewModel
                DisplayQuizz?.Invoke(quiz, false); 
                
             });
-            Register(this, AppContext.MSG_NEW_Quizz, () => {
-                // crée une nouvelle instance pour un nouveau course "vide"
+            //Register(this, AppContext.MSG_NEW_Quizz, () =>
+            //{
+            //    // crée une nouvelle instance pour un nouveau course "vide"
+            //    var quizz = App.Context.CreateQuizz();
+            //    //quizz.Course = App.CurrentCourse ;
+            //    // demande à la vue de créer dynamiquement un nouvel onglet avec le titre "<new member>"
+            //    DisplayQuizz?.Invoke(quizz, true);
+            //});
+            Register<Course>(this, AppContext.MSG_NEW_Quizz, course =>
+            {
                 var quizz = App.Context.CreateQuizz();
-                //quizz.Course = App.CurrentCourse ;
-                // demande à la vue de créer dynamiquement un nouvel onglet avec le titre "<new member>"
+                quizz.Course = course;
                 DisplayQuizz?.Invoke(quizz, true);
             });
+
             Register<Quiz>(this, AppContext.MSG_RENAMEQuizz_TAB, quiz =>
             {
                 RenameTabQuizz?.Invoke(quiz, quiz.Title);
