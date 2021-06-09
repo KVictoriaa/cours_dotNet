@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using prbd_2021_a06.Model;
 using PRBD_Framework;
+using Type = prbd_2021_a06.Model.Type;
 
 namespace prbd_2021_a06.ViewModel
 {
@@ -39,6 +41,7 @@ namespace prbd_2021_a06.ViewModel
             }
         }
         public ICommand SaveQuestion { get; set; }
+        public ICommand CancelQuestion { get; set; }
         private ObservableCollection<QuestionQuiz> questionQuizzs;
         public ObservableCollection<QuestionQuiz> QuestionQuizzs
         {
@@ -70,41 +73,136 @@ namespace prbd_2021_a06.ViewModel
                             where u.Student.Equals(App.CurrentUser) 
                             select u).FirstOrDefault();
 
-                
-                foreach (var proposition in Question.Propositions)
+                foreach (var qq in QuestionQuizzs)
                 {
-                    var answer = new AnswerQuestions();
-                    answer.Proposition = proposition;
-                    answer.StudentCourse = studentCourse;
-                    answer.QuestionQuiz = questionQuiz;
-                    App.Context.AnswerQuestions.Add(answer);
-                     
+                    var q = qq.Question;
+                    var anwers = (from a in App.Context.AnswerQuestions
+                                  where a.StudentCourse.Id == studentCourse.Id &&
+                                  //a.Proposition.Id == proposition.Id &&
+                                  a.QuestionQuiz.Id == qq.Id
+                                  select a).ToList();
+                    if(anwers != null)
+                    {
+                        foreach (var a in anwers)
+                        {
+                            App.Context.AnswerQuestions.Remove(a);
+                        }
+                    }
+                    
+
+                    foreach (var proposition in q.Propositions)
+                    {
+                        if (proposition.IsCheck)
+                        {
+                            
+                            var answer = new AnswerQuestions();
+                            answer.Proposition = proposition;
+                            answer.StudentCourse = studentCourse;
+                            answer.QuestionQuiz = qq;
+                            App.Context.AnswerQuestions.Add(answer);
+
+                            if ( q.Type == Type.One) 
+                            {
+                                if (proposition.IsCorrect)
+                                {
+                                    Console.WriteLine(proposition.Body);
+                                    Console.WriteLine(qq.Point);
+                                    Console.WriteLine("One");
+                                    answer.Point = qq.Point;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(proposition.Body);
+                                    Console.WriteLine("not correct");
+                                    answer.Point = 0;
+                                }
+                            }
+
+                            else
+                            {
+
+                                var propositions = q.Propositions.ToList();
+                                int answersTrue = 0;
+                                int answersFalse = 0;
+                                foreach (var p in propositions)
+                                {
+                                    if (p.IsCheck)
+                                    {
+                                        if (p.IsCorrect)
+                                        {
+                                            ++answersTrue;
+
+                                        }
+                                        else
+                                        {
+                                            ++answersFalse;
+                                        }
+                                    }
+
+                                    Console.WriteLine("answerTrue:" + answersTrue);
+                                    Console.WriteLine("answerFasle:" + answersFalse);
+                                }
+                                var propositionsCorrect = q.Propositions.Where(p => p.IsCorrect == true).ToList().Count;
+                                var PointManyQuestions = qq.Point * Math.Max((answersTrue - answersFalse), 0) / propositionsCorrect;
+
+                                answer.Point = PointManyQuestions / propositionsCorrect;
+                                Console.WriteLine("correct prop" + propositionsCorrect);
+                                Console.WriteLine("max" + Math.Max((answersTrue - answersFalse), 0));
+                                Console.WriteLine("point tot" + qq.Point * Math.Max((answersTrue - answersFalse), 0));
+                                Console.WriteLine("point question" + qq.Point);
+                            }
+                        }
+
+
+                    }
+                    
+                   
+                  
+
                 }
-              
+                
                 Context.SaveChanges();
                 
             });
-            }
+            CancelQuestion = new RelayCommand(CancelAction
+
+                );
+            
+        }
 
         public void Init(Quiz quizz, bool isNew)
         {
             this.Quizz = quizz;
-            Console.WriteLine(Quizz.Id);
             this.IsNew = isNew;
-            var list = App.Context.QuestionQuizzes.Where(sc => sc.Quiz.Id == Quizz.Id).Select(sc => new QuestionQuiz()
-            {
-                Quiz = sc.Quiz,
-                Question = sc.Question,
-               
-             });
-            
-            QuestionQuizzs = new ObservableCollection<QuestionQuiz>(list);
+            QuestionQuizzs = new ObservableCollection<QuestionQuiz>(Quizz.QuestionQuizzes);
             
             Question = quizz.GetQuestion(quizz);
+            loadAnswerQuestions();
             RaisePropertyChanged();
         }
-        
-       
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return (Quizz != null) ? Quizz.Fin > DateTime.Now: true;
+
+            }
+        }
+        public Visibility CorrectPropos
+        {
+            get
+            {
+                return (Quizz != null && Quizz.Fin < DateTime.Now) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+        private void CancelAction()
+        {
+            
+                Console.WriteLine("Close");
+                NotifyColleagues(AppContext.MSG_CLOSE_TABQUIZZ, Quizz);
+            
+        }
         public int Id
         {
             get { return Convert.ToInt32(Quizz?.Id); }
@@ -135,10 +233,33 @@ namespace prbd_2021_a06.ViewModel
                 RaisePropertyChanged(nameof(Course));
             }
         }
+        //Récupère l'état de réponse
+        public void loadAnswerQuestions()
+        {
+            var answers = (from a in App.Context.AnswerQuestions
+                          where a.StudentCourse.Student.Id.Equals(App.CurrentUser.Id)
+                          select a).ToList();
+            foreach (var q in QuestionQuizzs)
+            {
+                foreach (var p in answers)
+                {
+                    if(q.Id == p.QuestionQuiz.Id)
+                    {
+                        foreach (var proposition in q.Question.Propositions)
+                        {
+                            if (proposition.Id == p.Proposition.Id)
+                            {
+                                proposition.IsCheck = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
         protected override void OnRefreshData()
         {
-            throw new NotImplementedException();
+            
         }
     }
     
