@@ -5,15 +5,19 @@ using System.Windows.Input;
 using prbd_2021_a06.Model;
 using PRBD_Framework;
 
-namespace prbd_2021_a06.ViewModel {
-    public class CategoryViewModel : ViewModelCommon {
-        private ObservableCollection<CategoryQuestionsHelper> categoryQuestions ;
-        public ObservableCollection<CategoryQuestionsHelper> CategoryQuestions {
-            get => categoryQuestions;
-            set => SetProperty<ObservableCollection<CategoryQuestionsHelper>>(ref categoryQuestions , value);
+namespace prbd_2021_a06.ViewModel
+{
+    public class CategoryViewModel : ViewModelCommon
+    {
+        private ObservableCollection<CategoryCoursesHelper> categoryCourses;
+        public ObservableCollection<CategoryCoursesHelper> CategoryCourses
+        {
+            get => categoryCourses;
+            set => SetProperty<ObservableCollection<CategoryCoursesHelper>>(ref categoryCourses, value);
         }
         private int courseId;
-        public int CourseId {
+        public int CourseId
+        {
             get => courseId;
             set => SetProperty<int>(ref courseId, value, OnRefreshData);
         }
@@ -21,68 +25,92 @@ namespace prbd_2021_a06.ViewModel {
         public ICommand CancelCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public CategoryViewModel(){
+        public CategoryViewModel()
+        {
             RegisterCommand = new RelayCommand(() => SaveItem());
             DeleteCommand = new RelayCommand<int>((id) => DeleteItem(id));
             CancelCommand = new RelayCommand(() => OnRefreshData());
         }
 
-        public void SaveItem() {
-            foreach (var item in CategoryQuestions) {
+        public void SaveItem()
+        {
+            foreach (var item in CategoryCourses)
+            {
                 // Cas d'enregistrement
-                if(item.Id==0  && !string.IsNullOrEmpty(item.CategoryName)) {
-                     new Category(item.CategoryName).AddNew();
+                if (item.IdCategory == 0 && !string.IsNullOrEmpty(item.CategoryName))
+                {
+                    var category = new Category(item.CategoryName);
+                    category.Course = App.Context.Courses.Find(item.IdCourse);
+                    category.AddNew();
                     OnRefreshData();
                 }
-                
+
             }
         }
 
-        public void DeleteItem(int id) {
+        public void DeleteItem(int id)
+        {
             var item = App.Context.Categories.Find(id);
-            if (item != null) {
+            if (item != null)
+            {
                 item.Remove();
                 OnRefreshData();
             }
         }
 
-        protected override void OnRefreshData() {
+        protected override void OnRefreshData()
+        {
+            var cs = App.Context.Courses.ToList();
             var filter = App.Context.Categories
-                .Where(c => c.CategoryQuestions.Any(cq => cq.Questions.Course.Id == courseId) || c.CategoryQuestions == null)
+                .Where(c => c.Course.Id == courseId)
                 .OrderBy(c => c.Title)
-                .Select(c => new CategoryQuestionsHelper() {
+                .Select(c => new CategoryCoursesHelper()
+                {
                     CategoryName = c.Title,
-                    Id = c.Id,
+                    IdCategory = c.Id,
+                    IdCourse = c.Course.Id,
                     NumberOfQuestion = c.CategoryQuestions != null ? c.CategoryQuestions.Count() : 0
                 }).ToList();
 
-            filter.Add(new CategoryQuestionsHelper() { CategoryName = "" });
+            filter.Add(new CategoryCoursesHelper() { CategoryName = "", IdCourse = courseId });
 
-            CategoryQuestions = new ObservableCollection<CategoryQuestionsHelper>(filter);
+            CategoryCourses = new ObservableCollection<CategoryCoursesHelper>(filter);
         }
 
     }
-    public class CategoryQuestionsHelper: ViewModelCommon {
-        private int id;
-        public int Id {
-            get => id;
-            set => SetProperty<int>(ref id, value);
+    public class CategoryCoursesHelper : ViewModelCommon
+    {
+        private int idCategory;
+        public int IdCategory
+        {
+            get => idCategory;
+            set => SetProperty<int>(ref idCategory, value);
+        }
+
+        private int idCourse;
+        public int IdCourse
+        {
+            get => idCourse;
+            set => SetProperty<int>(ref idCourse, value);
         }
 
         private string categoryName;
-        public string CategoryName {
+        public string CategoryName
+        {
             get => categoryName;
             set => SetProperty<string>(ref categoryName, value);
         }
 
-        private int numberOfQuestion;
-        public int NumberOfQuestion {
+        private int? numberOfQuestion;
+        public int? NumberOfQuestion
+        {
             get => numberOfQuestion;
-            set => SetProperty<int>(ref numberOfQuestion, value);
+            set => SetProperty<int?>(ref numberOfQuestion, value);
         }
 
-        protected override void OnRefreshData() {
-            throw new NotImplementedException();
+        protected override void OnRefreshData()
+        {
+            //throw new NotImplementedException();
         }
     }
 }
