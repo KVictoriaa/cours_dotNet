@@ -13,13 +13,16 @@ namespace prbd_2021_a06.Model {
         [Key]
         public int Id { get; set; }
         public string Title { get; set; }
+        public virtual Course Course { get; set; }
+
         public virtual ICollection<CategoryQuestion> CategoryQuestions { get; set; } = new HashSet<CategoryQuestion>();
         [NotMapped]
-        public IEnumerable<Question> Questions { get => CategoryQuestions.Select(sc => sc.Questions); }
+        public IEnumerable<Question> Questions { get => CategoryQuestions.Select(sc => sc.Question); }
+        public bool IsChecked { get; set; } = true;
+        public Category (String title) { 
+            this.Title = title;  }
 
-        public Category (String title) { this.Title = title;  }
-
-
+        
         public void AddNew() {
             Context.Categories.Add(this);
             Context.SaveChanges();
@@ -30,7 +33,14 @@ namespace prbd_2021_a06.Model {
             Context.SaveChanges();
         }
 
-
+        public static IQueryable<Category> GetFilteredCategories(int Filter)
+        {
+            var filtered = from c in Context.Categories
+                           where c.Id.Equals(Filter)
+                           orderby c.Title
+                           select c;
+            return filtered;
+        }
 
     }
 }
