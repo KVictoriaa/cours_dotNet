@@ -1,4 +1,6 @@
-﻿using System;
+﻿using prbd_2021_a06.Model;
+using PRBD_Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +19,13 @@ namespace prbd_2021_a06.View
     /// <summary>
     /// Logique d'interaction pour GradeView.xaml
     /// </summary>
-    public partial class GradeView : Window
+    public partial class GradeView : UserControlBase
     {
-        public GradeView()
+        public GradeView(Course course)
         {
             InitializeComponent();
+            vm.Init(course);
+
         }
     }
 }
