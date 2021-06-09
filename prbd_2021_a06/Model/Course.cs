@@ -23,6 +23,9 @@ namespace prbd_2021_a06.Model
         [NotMapped]
         public IEnumerable<User> Students { get => StudentCourses.Select(sc => sc.Student); }
         [NotMapped]
+        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
+
+        [NotMapped]
         public int NbActifStudents 
         {
             get
@@ -132,6 +135,7 @@ namespace prbd_2021_a06.Model
 
         public IQueryable<Quiz> GetQuizzes(Course observer)
         {
+            
             var quizzes = Context.Quizzes.Where(q => q.Course == observer);
             return quizzes;
         }
@@ -142,7 +146,15 @@ namespace prbd_2021_a06.Model
         }
         public static IQueryable<Course> GetAll()
         {
-            return Context.Courses.OrderBy(m => m.Title);
+            if (App.CurrentUser.IsTeacher)
+            {
+                var course = from c in Context.Courses
+                         where c.Teacher.Equals(App.CurrentUser)
+                         select c;
+                         return course;
+            }
+            return App.Context.Courses;
+            
         }
 
         public static IQueryable<Course> GetFiltered(string Filter)

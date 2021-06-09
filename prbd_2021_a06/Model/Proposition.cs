@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace prbd_2021_a06.Model {
         public bool IsCorrect { get; set; }
         public string Body { get; set; }
         public virtual Question Question { get; set; }
+        public bool IsCheck { get; set; }
         public Proposition()
         {
 
@@ -24,7 +26,7 @@ namespace prbd_2021_a06.Model {
             this.Body = Body;
             this.IsCorrect = IsCorrect;
         }
-        
+        [NotMapped]
         public Question GetMany
         {
             get
@@ -37,6 +39,7 @@ namespace prbd_2021_a06.Model {
                     ).FirstOrDefault();
             }
         }
+        [NotMapped]
         public Visibility IsTrue
         {
             get
@@ -48,6 +51,7 @@ namespace prbd_2021_a06.Model {
                 return Visibility.Visible;
             }
         }
+        [NotMapped]
         public Visibility OneAnswer
         {
             get
@@ -58,7 +62,9 @@ namespace prbd_2021_a06.Model {
                 }
                 return Visibility.Visible;
             }
+
         }
+        [NotMapped]
         public Visibility ManyAnswer
         {
             get
@@ -69,6 +75,7 @@ namespace prbd_2021_a06.Model {
                 }
                 return Visibility.Visible;
             }
+            
         }
         public void Delete()
         {
