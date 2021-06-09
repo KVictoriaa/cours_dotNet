@@ -42,7 +42,12 @@ namespace prbd_2021_a06.ViewModel
             get => confirm_password; 
             set => SetProperty<string>(ref confirm_password, value, () => Validate());
         }
-
+        private string picturePath;
+        public string PicturePath
+        {
+            get => picturePath = null;
+            //set => SetProperty<string>(ref password, value, () => Validate());
+        }
         public event Action OnSignupSuccess;
         public event Action OnLogin;
         public ICommand SignupCommand { get; set; }
@@ -74,7 +79,8 @@ namespace prbd_2021_a06.ViewModel
                     Email , 
                     FirstName, 
                     LastName,
-                    Password
+                    Password,
+                    PicturePath 
                    
                 );
                 Login(user);
@@ -104,35 +110,29 @@ namespace prbd_2021_a06.ViewModel
                    // AddError(nameof(Email), Resources.Error_DoesExist);
             
             
-               /* if (string.IsNullOrEmpty(FirstName))
+               if (string.IsNullOrEmpty(FirstName))
                     AddError(nameof(FirstName), Resources.Error_Required);
                 else if (FirstName.Length < 3)
                     AddError(nameof(FirstName), Resources.Error_LengthGreaterEqual3);
-                else if (user == null)
-                    AddError(nameof(FirstName), Resources.Error_DoesNotExist);
-            
+                
             
                 if (string.IsNullOrEmpty(LastName))
                     AddError(nameof(LastName), Resources.Error_Required);
                 else if (LastName.Length < 3)
                     AddError(nameof(LastName), Resources.Error_LengthGreaterEqual3);
-                else if (user == null)
-                    AddError(nameof(LastName), Resources.Error_DoesNotExist);
-            
+                
             
                 if ( Password != ConfirmPassword)
                     AddError(nameof(ConfirmPassword), Resources.Error_WrongPasswordConfirm);
             
 
-            else
-            {
+            
                 if (string.IsNullOrEmpty(Password))
                     AddError(nameof(Password), Resources.Error_Required);
                 else if (Password.Length < 3)
                     AddError(nameof(Password), Resources.Error_LengthGreaterEqual3);
-                else if ( user.Password == Password)
-                    AddError(nameof(Password), Resources.Error_WrongPassword);
-            }*/
+               
+            
 
             RaiseErrors();
             return !HasErrors;
