@@ -32,35 +32,14 @@ namespace prbd_2021_a06.View
         }
 
 
-        //public Course Course
-        //{
-        //    get { return (Course)GetValue(CourseProperty); }
-        //    set { SetValue(CourseProperty, value); }
-            
-        //}
 
 
-
-       /* private void button_Click(object sender, RoutedEventArgs e)
+       private void QestionsByCategory(object sender, RoutedEventArgs e)
 
         {
 
-            TextBox txt = new TextBox();
+            vm.CategoryChecked.Execute(null);
 
-            txt.Height = 50;
-
-            txt.Width = 50;
-
-            txt.VerticalAlignment = VerticalAlignment.Top;
-
-            txt.HorizontalAlignment = HorizontalAlignment.Left;
-
-            txt.Name = "Test";
-
-            txt.Text = "Test";
-
-            txt.Visibility = Visibility.Visible;
-
-        }*/
+        }
     }
 }
