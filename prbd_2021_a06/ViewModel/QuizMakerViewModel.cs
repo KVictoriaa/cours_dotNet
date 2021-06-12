@@ -77,6 +77,10 @@ namespace prbd_2021_a06.ViewModel
             }
 
             );
+            App.Register(this, AppContext.MSG_QUESTIONQUIZZ_CHANGED, () =>
+            {
+                ListQuestionsQuizz();
+            });
         }
         private bool CanCancelAction()
         {
@@ -186,39 +190,39 @@ namespace prbd_2021_a06.ViewModel
         }
         public void LoadQuestions()
         {
-            //if (quizz.Id > 0)
-            //{
-            //    CourseQuiz = quizz.Course;
-
-            //QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
+            
+            QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
             var Questions = new ObservableCollection<Question>();
-            foreach (var q in QuestionQuizzs)
-            {
-                foreach (var question in QuestionsCourse)
-                {
+            var quests = (from u in QuestionQuizzs
+                          where u.Quiz.Id.Equals(quizz.Id)
+                          select u).Select(a => a.Question.Id).ToList();
 
-                    if (question.Id != q.Question.Id)
-                    {
-                        Questions.Add(question);
-                    }
+            foreach (var question in QuestionsCourse)
+                {
+                
+                if (!quests.Contains(question.Id))
+                {
+                     Questions.Add(question);
                 }
+              
             }
             QuestionsCourse = new ObservableCollection<Question>(Questions);
-            //}
+            
         }
 
         public void Init(Quiz quizz, bool isNew)
         {
             this.Quizz = quizz;
             this.IsNew = isNew;
+            Console.WriteLine(IsNew);
             ListQuestionsQuizz();
             if (quizz.Id > 0)
             {
                 CourseQuiz = quizz.Course;
-
-                QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
+                LoadQuestions();
+                //QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
             }
-            LoadQuestions();
+            
             
             RaisePropertyChanged();
         }
@@ -345,7 +349,7 @@ namespace prbd_2021_a06.ViewModel
         {
             get
             {
-                return (Quizz != null && Quizz.Debut < DateTime.Now) ? Visibility.Collapsed : Visibility.Visible;
+                return( Quizz != null && Id > 0 && Quizz.Debut < DateTime.Now) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
