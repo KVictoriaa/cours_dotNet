@@ -83,11 +83,10 @@ namespace prbd_2021_a06.Model
 
                 var anwers = (from a in App.Context.AnswerQuestions
                               where a.StudentCourse.Id == studentCourse.Id 
-                              //a.QuestionQuiz.Id == qq.Id
                               select a).Select(a => a.QuestionQuiz.Quiz).ToList();
                 Console.WriteLine(!anwers.Contains(this));
-                Console.WriteLine( Fin > DateTime.Now);
-                return  Fin < DateTime.Now && anwers.Contains(this);
+                Console.WriteLine( Fin < DateTime.Now);
+                return  (Fin < DateTime.Now && anwers.Contains(this)) || (DateTime.Now < Fin );
 
             }
         }

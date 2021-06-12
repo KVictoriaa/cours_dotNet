@@ -377,6 +377,9 @@ namespace prbd_2021_a06.Model {
             var QuestionQuiz1 = new QuestionQuiz();
             var QuestionQuiz2 = new QuestionQuiz();
             var QuestionQuiz3 = new QuestionQuiz();
+            var QuestionQuiz4 = new QuestionQuiz();
+            var QuestionQuiz5 = new QuestionQuiz();
+            var QuestionQuiz6 = new QuestionQuiz();
 
 
 

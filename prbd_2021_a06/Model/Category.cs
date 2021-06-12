@@ -18,6 +18,7 @@ namespace prbd_2021_a06.Model {
         public virtual ICollection<CategoryQuestion> CategoryQuestions { get; set; } = new HashSet<CategoryQuestion>();
         [NotMapped]
         public IEnumerable<Question> Questions { get => CategoryQuestions.Select(sc => sc.Question); }
+        [NotMapped]
         public bool IsChecked { get; set; } = true;
         public Category (String title) { 
             this.Title = title;  }

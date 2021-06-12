@@ -17,7 +17,20 @@ namespace prbd_2021_a06.Model {
         public Boolean IsActif { get; set; }
         public virtual User Student { get; set; }
         public virtual Course Course { get; set; }
+        [NotMapped]
+        public virtual Quiz Quiz 
+        {
+            get
+            {
 
+                if(AnswerQuestions.FirstOrDefault() != null)
+                {
+                    return AnswerQuestions.FirstOrDefault().QuestionQuiz.Quiz;
+                }
+
+                return null;                
+            }
+         }
         public virtual ICollection<AnswerQuestions> AnswerQuestions { get; set; } = new HashSet<AnswerQuestions>();
         public virtual ICollection<Note> Notes { get; set; } = new HashSet<Note>();
         [NotMapped]
