@@ -94,10 +94,10 @@ namespace prbd_2021_a06.Model {
         public void SeedData () {
             Database.BeginTransaction();
 
-            var Boris = new User("Verh", "Boris", "Password1,", "boris@epfc.eu", null, Role.Teacher);
-            var Penelle = new User("Penelle", "Benoit", "Password1,", "benoit@epfc.eu", null, Role.Teacher);
-            var Bruno = new User("Lacroix", "Bruno", "Password1,", "bruno@epfc.eu", null, Role.Teacher);
-            var hello = new User("hello", "bonjour", "Bonjour1", "hello@bonjour", null, Role.Student);
+            var Boris = new User("Verh", "Boris", "Password1,", "boris@epfc.eu", "unknwon-user.jpg", Role.Teacher);
+            var Penelle = new User("Penelle", "Benoit", "Password1,", "benoit@epfc.eu", "", Role.Teacher);
+            var Bruno = new User("Lacroix", "Bruno", "Password1,", "bruno@epfc.eu", "unknwon-user.jpg", Role.Teacher);
+            var hello = new User("hello", "bonjour", "Bonjour1", "hello@bonjour", "", Role.Student);
             var letitia = new User("T", "Letitia", "Password1", "letitia@epfc", null, Role.Student);
             var victoria = new User("V", "Victoria", "Password1", "hello@epfc", null, Role.Student);
             var Nicolas = new User("J", "Nicolas", "Password1", "hello@epfc", null, Role.Student);

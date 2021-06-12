@@ -15,6 +15,7 @@ namespace prbd_2021_a06.Model {
         public bool IsCorrect { get; set; }
         public string Body { get; set; }
         public virtual Question Question { get; set; }
+        [NotMapped]
         public bool IsCheck { get; set; }
         public Proposition()
         {
