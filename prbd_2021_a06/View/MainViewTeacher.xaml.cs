@@ -107,6 +107,7 @@ namespace prbd_2021_a06.View
         }
         private void Menu_Profile_Click(object sender, RoutedEventArgs e)
         {
+
             var tag = "Profile";
             var tab = tabControl.FindByTag(tag);
             if (tab == null)
