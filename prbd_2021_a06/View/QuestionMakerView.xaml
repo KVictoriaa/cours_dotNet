@@ -74,42 +74,42 @@
                     <Run Text="{Binding Questions.Count, Mode=OneWay}" />
                     <Run Text=")" />
             </TextBlock>
-            
-                <ListView x:Name="listVie" ItemsSource="{Binding Questions , Mode=TwoWay}" Grid.Row="1" BorderBrush="Transparent" SelectionMode="Single" 
-                          ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+            <!--ScrollViewer Grid.Row="2" Margin="0,1,0,90" Grid.RowSpan="2" >-->
+                <ListView x:Name="listVie" ItemsSource="{Binding Questions , Mode=TwoWay}" Grid.Row="2" BorderBrush="Transparent" SelectionMode="Single" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                           SelectedItem="{Binding SelectedQuestion, Mode=TwoWay}"  IsEnabled="{Binding ReadMode}" 
-                          Height="Auto" Grid.ColumnSpan="2" Margin="0,61,0,111" Grid.RowSpan="2">
+                          Height="239" Grid.ColumnSpan="2" Margin="0,1,0,111" Grid.RowSpan="2">
 
-                <ListView.ItemTemplate >
-                    <DataTemplate >
-                        <StackPanel Width="auto">
-                            <TextBlock FontSize="10" FontWeight="Normal" Width="auto" TextAlignment="Center" Text="{Binding Enonce, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
-                            <ListView x:Name="listView2" ItemsSource="{Binding Propositions,Mode=TwoWay}" Grid.Row="1"  
-                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsEnabled="False"  
+                    <ListView.ItemTemplate >
+                        <DataTemplate >
+                            <StackPanel Width="auto">
+                                <TextBlock FontSize="10" FontWeight="Normal" Width="auto" TextAlignment="Center" Text="{Binding Enonce}"/>
+                                <ListView x:Name="listView2" ItemsSource="{Binding Propositions}" Grid.Row="1"  
+                                       IsEnabled="False"  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                       IsSynchronizedWithCurrentItem="True" VerticalAlignment="Stretch" BorderBrush="Transparent">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate >
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate >
 
-                                        <StackPanel Width="auto" VerticalAlignment="Stretch" HorizontalAlignment="Left" Orientation="Horizontal">
-                                            <RadioButton Visibility="{Binding  OneAnswer , Mode=OneTime}"
-                                                         Content="{Binding Body}" IsChecked="{Binding IsCorrect, Mode=TwoWay}"
+                                            <StackPanel Width="auto" VerticalAlignment="Stretch" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <RadioButton Visibility="{Binding  OneAnswer , Mode=OneTime}"
+                                                         Content="{Binding Body}" IsChecked="{Binding IsCorrect, Mode=OneWay}"
                                                          HorizontalAlignment="Left" VerticalAlignment="Stretch" />
-                                            <CheckBox Visibility="{Binding ManyAnswer , Mode=OneTime}"
+                                                <CheckBox Visibility="{Binding ManyAnswer , Mode=OneTime}"
                                                       Content="{Binding Body}" IsChecked="{Binding IsCorrect}"
                                                       Margin="10,0,10,0" HorizontalAlignment="Left"  
                                                       IsEnabled="{Binding Question.ReadMode}"/>
-                                            <!--<TextBlock FontSize="10" FontWeight="Normal" Width="auto" TextAlignment="Center" Text="{Binding Body}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />-->
-                                        </StackPanel>
+                                                <!--<TextBlock FontSize="10" FontWeight="Normal" Width="auto" TextAlignment="Center" Text="{Binding Body}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />-->
+                                            </StackPanel>
 
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
 
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-           
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            <!--</ScrollViewer>-->
         </Grid>
         <Grid HorizontalAlignment="Right" Width="350">
             <Grid.ColumnDefinitions>
@@ -135,7 +135,7 @@
                 </f:ValidatedField>
 
                 <Label Content="Answer :" VerticalAlignment="Center" Grid.Row="1" Height="26" />
-                <f:ValidatedField VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="5" >
+                <f:ValidatedField VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0" >
                     <TextBox Text="{Binding PropositionsString, UpdateSourceTrigger=PropertyChanged}" 
                              Grid.Row="0" Grid.Column="1" Margin="5,5,5,5"
                              Grid.ColumnSpan="2" Height="56" 
@@ -144,7 +144,7 @@
 
                 <Label Content="Type :" VerticalAlignment="Center" Grid.Row="2" Height="26" />
                 <f:ValidatedField VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Margin="5,0,5,0" Grid.ColumnSpan="2" Height="22">
-                    <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding Type}" />
                 </f:ValidatedField>
                 <Label Content="Catergory :" VerticalAlignment="Center" Grid.Row="3" Height="26"/>
                 <ListView x:Name="listViewCategory" ItemsSource="{Binding CategoriesSelectQuestion}" 
