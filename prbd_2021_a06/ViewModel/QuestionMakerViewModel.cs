@@ -225,6 +225,7 @@ namespace prbd_2021_a06.ViewModel
                 }
                 Questions = new ObservableCollectionFast<Question>(ques);
             });
+            
         }
         private bool SaveActionEnab()
         {
@@ -270,10 +271,11 @@ namespace prbd_2021_a06.ViewModel
             Questions = new ObservableCollectionFast<Question>(Course.Questions);
             RaisePropertyChanged();
             Category = new ObservableCollection<Category>(Course.Categories);
-            
-               
+
+
         }
         
+
         public string Enonce
         {
             get { return Question?.Enonce; }
