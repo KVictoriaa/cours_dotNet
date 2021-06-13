@@ -26,7 +26,9 @@ namespace prbd_2021_a06
         MSG_Quizz,
         MSG_DISPLAY_QUIZZSTUDENT,
         MSG_CLOSE_TABQUIZZ,
-        MSG_REFRESH_CATEGORY
+        MSG_REFRESH_CATEGORY,
+        MSG_CLOSE_TABQUIZZ_ETUDIANT,
+        MSG_QUESTIONQUIZZ_CHANGED,
 
 
     }
@@ -56,9 +58,9 @@ namespace prbd_2021_a06
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            //Context.Database.EnsureDeleted();
-            //Context.Database.EnsureCreated();
-            //Context.SeedData();
+            Context.Database.EnsureDeleted();
+            Context.Database.EnsureCreated();
+            Context.SeedData();
         }
 
         protected override void OnRefreshData()
