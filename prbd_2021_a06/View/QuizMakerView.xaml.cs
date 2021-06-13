@@ -27,22 +27,8 @@ namespace prbd_2021_a06.View
         {
             InitializeComponent();
             vm.Init(quizz, isNew);
-            //VmQuizz = new QuizMakerViewModel();
+            
         }
        
-
-        /*public static readonly DependencyProperty CourseProperty =
-            DependencyProperty.Register(
-                nameof(Course),                 // nom de la propriété
-                typeof(Course),                 // type associé à la propriété
-                typeof(QuizMaker),     // type "propriétaire" qui déclare la propriété
-                new PropertyMetadata(null)      // métadonnées associées qui définissent la valeur par défaut (ici null)
-            );
-
-        public Course Course
-        {
-            get { return (Course)GetValue(CourseProperty); }
-            set { SetValue(CourseProperty, value); }
-        }*/
     }
 }

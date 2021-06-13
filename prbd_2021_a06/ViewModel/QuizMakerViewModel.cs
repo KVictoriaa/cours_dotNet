@@ -58,7 +58,7 @@ namespace prbd_2021_a06.ViewModel
         {
             Save = new RelayCommand(OnSaveQuiz, CanSaveAction);
             Cancel = new RelayCommand(OnCancelQuiz, CanCancelAction);
-            //DeleteCommand = new RelayCommand(DeleteAction, () => !IsNew);
+            DeleteCommand = new RelayCommand(OnDeleteQuiz, () => !IsNew);
             AddQuestions = new RelayCommand(() =>
             {
 
@@ -123,6 +123,7 @@ namespace prbd_2021_a06.ViewModel
             }
             else
             { // Enregistrer le quiz
+                Console.WriteLine("Save");
                 var c = App.Context.Courses.FirstOrDefault(co => co.Title.Trim().ToLower().Equals(Course.ToLower().Trim()));
                 quiz = new Quiz()
                 {
@@ -133,6 +134,7 @@ namespace prbd_2021_a06.ViewModel
                 };
                 App.Context.Quizzes.Add(quiz);
                 App.Context.SaveChanges();
+                //NotifyColleagues(AppContext.MSG_QUIZZ_CHANGED, Quizz.Title);
             }
 
             if (QuestionQuizzs != null && quiz != null && quiz.Id > 0)
@@ -171,7 +173,9 @@ namespace prbd_2021_a06.ViewModel
                 }
             }
 
-
+            NotifyColleagues(AppContext.MSG_QUIZZ_CHANGED, Quizz);
+            NotifyColleagues(AppContext.MSG_QUIZZ);
+            NotifyColleagues(AppContext.MSG_RENAMEQuizz_TAB, Quizz);
             // Notifier la vue.
         }
 
@@ -182,7 +186,7 @@ namespace prbd_2021_a06.ViewModel
                 var quiz = App.Context.Quizzes.Find(Id);
                 if (quiz != null)
                 {
-                    App.Context.Quizzes.Remove(quiz);
+                    Quizz.Delete();
                     App.Context.SaveChanges();
                 }
                 //Add a comment to this line
