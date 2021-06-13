@@ -15,6 +15,7 @@ namespace prbd_2021_a06.ViewModel
         public event Action OnLogout;
         public event Action<Course, bool> DisplayCourse;
         public event Action<Quiz, bool> DiplayQuizzStudent;
+        public event Action<Quiz> CloseTabQuizStudent;
 
         public ICommand LogoutCommand { get; set; }
         public MainViewModelStudent() : base()
@@ -30,6 +31,11 @@ namespace prbd_2021_a06.ViewModel
                 DiplayQuizzStudent?.Invoke(quiz, false);
 
             });
+            Register<Quiz>(this, AppContext.MSG_CLOSE_TABQUIZZ_ETUDIANT, quizz =>
+            {
+                CloseTabQuizStudent?.Invoke(quizz);
+            });
+
         }
         private void LogoutAction()
         {

@@ -30,6 +30,8 @@ namespace prbd_2021_a06.Model
         [NotMapped]
         public IEnumerable<Quiz> Quizzes { get => QuestionQuizzes.Select(sc => sc.Quiz); }
         [NotMapped]
+        public IEnumerable<Question> QuestionDate { get => QuestionQuizzes.Where(q=> q.Quiz.Debut < DateTime.Now).Select(sc => sc.Question); }
+        [NotMapped]
         public IEnumerable<Proposition> CorrectPropos { get => Propositions.Where(sc => sc.IsCorrect); }
 
         public Question (
@@ -86,6 +88,7 @@ namespace prbd_2021_a06.Model
         {
             return Enonce ;
         }
+
         [NotMapped]
         private bool editMode = false;
         [NotMapped]
@@ -106,12 +109,21 @@ namespace prbd_2021_a06.Model
         }
         public void Delete()
         {
-            //if(Question)
+            foreach (var questionQuiz in QuestionQuizzes)
+            {
+                Context.QuestionQuizzes.Remove(questionQuiz);
+            }
             Context.Questions.Remove(this);
             Context.SaveChanges();
         }
-
-         
+        [NotMapped]
+         public bool IsEnabled
+        {
+            get
+            {
+                return QuestionDate.Contains(this);
+            }
+        }
         /* public static IQueryable<Question> GetAll(Course course)
          {
              return Context.Messages.OrderByDescending(m => m.DateTime);

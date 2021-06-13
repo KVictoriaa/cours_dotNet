@@ -70,8 +70,15 @@ namespace prbd_2021_a06.View
                 }
             }
         }
+        private void Vm_CloseTabQuizStudent(Quiz quiz)
+        {
+            var tab = tabControl.FindByTag(quiz.Title);
+            tabControl.Items.Remove(tab);
+        }
+
         private void Menu_Profile_Click(object sender, RoutedEventArgs e)
         {
+
             var tag = "Messages";
             var tab = tabControl.FindByTag(tag);
             if (tab == null)

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using prbd_2021_a06.Model;
 using PRBD_Framework;
 
 namespace prbd_2021_a06.View
@@ -24,12 +25,14 @@ namespace prbd_2021_a06.View
         public ProfileView()
         {
             InitializeComponent();
+           
         }
         private string Vm_OnLoadImage()
         {
             var fd = new OpenFileDialog();
             if (fd.ShowDialog() == true)
             {
+                Console.WriteLine("hello");
                 return fd.FileName;
             }
             return null;

@@ -19,15 +19,15 @@
             </Grid.RowDefinitions>
 
             <DataGrid x:Name="gridGrade" Margin="10,10,10,9" AutoGenerateColumns="False"
-                       IsReadOnly="True" ItemsSource="{Binding Quizzes}"
+                       IsReadOnly="True" ItemsSource="{Binding StudentCourses}"
                       
                      >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="StudentName" Binding="{Binding Student.FirstName}"/>
+                    <DataGridTextColumn Header="StudentName" Binding="{Binding Path=Student.FirstName}"/>
                     <DataGridTextColumn Header="Note" Binding="{Binding Total}"/>
-                    <DataGridTextColumn Header="Quizz" Binding="{Binding Title}"/>
-                    <DataGridTextColumn Header="Course" Binding="{Binding Course.Title}"/>
-                    <DataGridTextColumn Header="Teacher" Binding="{Binding Course.Teacher.FirstName}"/>
+                    <DataGridTextColumn Header="Quizz" Binding="{Binding Path=Quiz.Title }"/>
+                    <DataGridTextColumn Header="Course" Binding="{Binding Path=Course.Title}"/>
+                    <DataGridTextColumn Header="Teacher" Binding="{Binding Path=Course.Teacher.FirstName}"/>
 
                 </DataGrid.Columns>
             </DataGrid>

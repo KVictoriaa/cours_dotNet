@@ -12,6 +12,7 @@ using prbd_2021_a06.View;
 using PRBD_Framework;
 using prbd_2021_a06.Properties;
 using Type = prbd_2021_a06.Model.Type;
+using Microsoft.EntityFrameworkCore;
 
 namespace prbd_2021_a06.ViewModel
 {
@@ -76,74 +77,60 @@ namespace prbd_2021_a06.ViewModel
 
         public QuestionMakerViewModel() : base()
         {
-            
+
             SaveOneCommand = new RelayCommand(() => {
-
-                if (isNew)
+                if (ValidateEnonce() && Validate())
                 {
-                    
-                    Question.Enonce = Enonce;
-                    Question.Type = Type;
-                    Question.Course = Course;
 
-                    App.Context.Questions.Add(Question);
-                    App.Context.SaveChanges();
-                    Question = (from u in App.Context.Questions
-                                where u.Enonce.Equals(Enonce) && u.Course.Id == course.Id
-                                select u).FirstOrDefault();
-                    IsNew = false;
-                }
-                else
-                {
-                    Console.WriteLine("not new");
-                    /*Question = (from u in App.Context.Questions
-                                where u.Enonce.Equals(Enonce) && u.Course.Id == course.Id
-                                select u).FirstOrDefault();*/
-                    App.Context.Propositions.RemoveRange(Question.Propositions);
 
-                }
-
-                List<string> listOfNames = new List<string>(propositionsString.Split(Environment.NewLine));
-                foreach (var proposition in listOfNames)
-                {
-                    Proposition prop = new Proposition();
-                    prop.Question = Question;
-
-                    if (proposition.Contains("*"))
+                    if (isNew)
                     {
-                        prop.Body = proposition.Replace("*", "");
-                        prop.IsCorrect = true;
+
+                        Question.Enonce = Enonce;
+                        Question.Type = Type;
+                        Question.Course = Course;
+                        Console.WriteLine(Type);
+                        App.Context.Questions.Add(Question);
+                        App.Context.SaveChanges();
+                        //Question = (from u in App.Context.Questions
+                        //            where u.Enonce.Equals(Enonce) && u.Course.Id == course.Id
+                        //            select u).FirstOrDefault();
+                        IsNew = false;
                     }
                     else
                     {
-                        prop.Body = proposition;
-                        prop.IsCorrect = false;
+                        
+                        App.Context.Propositions.RemoveRange(Question.Propositions);
+                        Update();
+
                     }
 
-                    App.Context.Propositions.Add(prop);
-                }
-                foreach (var c in Category)
-                {
-                    if (c.IsChecked)
+                    foreach (var c in Category)
                     {
-                        CategoryQuestion categoryQuestion = new CategoryQuestion();
-                        categoryQuestion.Question = Question;
-                        categoryQuestion.Category = c;
-                        App.Context.CategoryQuestions.Add(categoryQuestion);
+                        if (c.IsChecked)
+                        {
+                            CategoryQuestion categoryQuestion = new CategoryQuestion();
+                            categoryQuestion.Question = Question;
+                            categoryQuestion.Category = c;
+                            App.Context.CategoryQuestions.Add(categoryQuestion);
+                        }
                     }
-                }
 
-                Context.SaveChanges();
-                
-                EditMode = false;
-                NotifyColleagues(AppContext.MSG_REFRESH_QUESTIONS,Question.Enonce);
+                    Context.SaveChanges();
+
+                    EditMode = false;
+                    NotifyColleagues(AppContext.MSG_REFRESH_QUESTIONS, Question.Enonce);
+                    NotifyColleagues(AppContext.MSG_QUESTIONQUIZZ_CHANGED);
+                }
             },
             
-            () => EditMode );
+            () => EditMode && SaveActionEnab() && PropositionsString != null);
+        
 
             CancelCommand = new RelayCommand(() => {
                 Context.Entry(Question).Reload();
                 EditMode = false;
+                
                 //Validate();
                 RaisePropertyChanged();
             },
@@ -157,7 +144,7 @@ namespace prbd_2021_a06.ViewModel
             NewCommand = new RelayCommand(() => {
                 isNew = true;
                 EditMode = true;
-                Question = new Question("", Type);
+                SelectedQuestion = new Question("", Type);
                 Question.Course = Course;
                
             },
@@ -166,36 +153,44 @@ namespace prbd_2021_a06.ViewModel
             Register<String>(this, AppContext.MSG_REFRESH_QUESTIONS, _ => {
                 Questions = new ObservableCollectionFast<Question>(Course.Questions);
             });
-            //EditMode = false;
             DeleteCommand = new RelayCommand(() =>
             {
+
+                List<string> listOfNames = new List<string>(propositionsString.Split(Environment.NewLine));
+                foreach (var p in Question.Propositions)
+                {
+                    
+                    App.Context.Propositions.Remove(p);
+                } 
+                Question.Delete();
                 
-                    Question.Delete();
-                    App.Context.SaveChanges();
-                    Questions = new ObservableCollectionFast<Question>(course.Questions);
-                    //NotifyColleagues(AppContext.MSG_REFRESH_QUESTIONS);
-                
+                App.Context.SaveChanges();
+                Questions = new ObservableCollectionFast<Question>(course.Questions);
+                SelectedQuestion = new Question("", Type);
+                Question.Propositions = null;
+                NotifyColleagues(AppContext.MSG_REFRESH_QUESTIONS,Question.Enonce);
+                RaisePropertyChanged();
+
             },
             () => EditMode);
             AllCategories = new RelayCommand(() =>
             {
 
-                var Categs = new ObservableCollection<Category>(); //je creer une nouvelle liste de catégorie que je mets à jour avec ma liste de catégorie.
+                var Categories = new ObservableCollection<Category>(); //je creer une nouvelle liste de catégorie que je mets à jour avec ma liste de catégorie.
 
                 foreach (var categories in Category)
                 {
                     categories.IsChecked  = true;
-                    Categs.Add(categories);
+                    Categories.Add(categories);
                     
                 }
                 
-                Category = new ObservableCollection<Category>(Categs);
+                Category = new ObservableCollection<Category>(Categories);
                 Questions = new ObservableCollectionFast<Question>(course.Questions);
-                
-              
+
             });
           
-            //CategoryQuestion();
+            
             None = new RelayCommand(() =>
             {
                 var Categs = new ObservableCollection<Category>(); //je creer une nouvelle liste de catégorie que je mets à jour avec ma liste de catégorie.
@@ -231,7 +226,13 @@ namespace prbd_2021_a06.ViewModel
                 Questions = new ObservableCollectionFast<Question>(ques);
             });
         }
-       
+        private bool SaveActionEnab()
+        {
+            if (IsNew)
+                return Validate() && ValidateEnonce();
+            return Question != null && (Context?.Entry(Question)?.State == EntityState.Modified);
+        }
+
         private bool isNew;
         public bool IsNew
         {
@@ -272,30 +273,7 @@ namespace prbd_2021_a06.ViewModel
             
                
         }
-        //private void CancelAction()
-        //{
-        //    if (imageHelper.IsTransitoryState)
-        //    {
-        //        imageHelper.Cancel();
-        //    }
-        //    if (IsNew)
-        //    {
-        //        NotifyColleagues(AppMessages.MSG_CLOSE_TAB, Member);
-        //    }
-        //    else
-        //    {
-        //        Context.Reload(Member);
-        //        RaisePropertyChanged();
-        //    }
-        //}
-        //private void DeleteAction()
-        //{
-        //    CancelAction();
-            
-        //    Question.Delete();
-        //    NotifyColleagues(AppMessages.MSG_MEMBER_CHANGED, Member);
-        //    NotifyColleagues(AppMessages.MSG_CLOSE_TAB, Member);
-        //}
+        
         public string Enonce
         {
             get { return Question?.Enonce; }
@@ -305,7 +283,7 @@ namespace prbd_2021_a06.ViewModel
                 //EditMode = true;
                 RaisePropertyChanged(nameof(Enonce));
                 NotifyColleagues(AppContext.MSG_REFRESH_QUESTIONS,Question.Enonce);
-                Validate();
+                ValidateEnonce();
             }
         }
        
@@ -330,34 +308,11 @@ namespace prbd_2021_a06.ViewModel
             get { return propositionsString; }
             set
             {
-
                 propositionsString = value;
                 
-                RaisePropertyChanged(nameof(PropositionsString));
-                
                 NotifyColleagues(AppContext.MSG_REFRESH_QUESTIONS, Question.Enonce);
-                
-                var Props = new ObservableCollection<Proposition>();
-                List<string> listOfNames = new List<string>(propositionsString.Split(Environment.NewLine));
-                foreach (var proposition in listOfNames)
-                {
-                    Proposition prop = new Proposition();
-                    prop.Question = Question;
-
-                    if (proposition.Contains("*"))
-                    {
-                        prop.Body = proposition.Replace("*", "");
-                        prop.IsCorrect = true;
-                    }
-                    else
-                    {
-                        prop.Body = proposition;
-                        prop.IsCorrect = false;
-                    }
-
-                    Props.Add(prop);
-                }
-                Question.Propositions = Props;
+                Update();
+                RaisePropertyChanged(nameof(PropositionsString));
                 Validate();
             }
         }
@@ -369,7 +324,9 @@ namespace prbd_2021_a06.ViewModel
             set
             {
                 Question.Type = value;
-                //EditMode = true;
+                type = value;
+                Console.WriteLine(value);
+                Update();
                 RaisePropertyChanged(nameof(Type));
                 NotifyColleagues(AppContext.MSG_REFRESH_QUESTIONS, Question.Enonce);
                 //RaisePropertyChanged();
@@ -377,7 +334,31 @@ namespace prbd_2021_a06.ViewModel
             }
         }
 
+        private void Update()
+        {
+            var Props = new ObservableCollection<Proposition>();
+            List<string> listOfNames = new List<string>(propositionsString.Split(Environment.NewLine));
+            foreach (var proposition in listOfNames)
+            {
+                Proposition prop = new Proposition();
+                prop.Question = Question;
 
+                if (proposition.Contains("*"))
+                {
+                    prop.Body = proposition.Replace("*", "");
+                    prop.IsCorrect = true;
+                }
+                else
+                {
+                    prop.Body = proposition;
+                    prop.IsCorrect = false;
+                }
+
+                Props.Add(prop);
+            }
+            Console.WriteLine(Props);
+            Question.Propositions = Props;
+        }
         private Question selectedQuestion;
         public Question SelectedQuestion
         {
@@ -434,51 +415,54 @@ namespace prbd_2021_a06.ViewModel
             //CategoryQuestion();
             //EditMode = false;
             RaisePropertyChanged();
-            
-            
-
+         
         }
-        public override bool Validate()
+
+        public bool ValidateEnonce()
         {
             ClearErrors();
-
-            var user = (from u in App.Context.Questions
-                        where u.Enonce.Equals(Enonce)
-                        select u).FirstOrDefault();
-
-
-
             if (string.IsNullOrEmpty(Enonce))
             {
                 AddError(nameof(Enonce), Resources.Error_Required);
             }
-
-            List<string> addAnswers = new List<string>(PropositionsString.Split(Environment.NewLine));
-            int cpt = 0;
-            foreach (var answer in addAnswers)
-            {
-                Proposition proposition = null;
-                if (answer.Contains("*"))
-                {
-                    cpt++;
-                }
-            }
-
-            if (string.IsNullOrEmpty(PropositionsString))
-            {
-                AddError(nameof(PropositionsString), Resources.Error_Required);
-            }
-            else if (cpt == 1 && Question.Type == Type.Many)
-                    AddError(nameof(PropositionsString), Resources.Error_PropositionMany);
-            else if (cpt > 1 && Question.Type == Type.One  )
-                AddError(nameof(PropositionsString), Resources.Error_PropositionOne);
-
-
             RaiseErrors();
             return !HasErrors;
         }
 
+        public override bool Validate()
+        {
+            ClearErrors();
 
+            if (PropositionsString != null)
+            {
+
+                List<string> addAnswers = new List<string>(PropositionsString.Split(Environment.NewLine));
+                int cpt = 0;
+                foreach (var answer in addAnswers)
+                {
+                    Proposition proposition = null;
+                    if (answer.Contains("*"))
+                    {
+                        cpt++;
+                    }
+                }
+
+
+                if (string.IsNullOrEmpty(PropositionsString))
+                {
+                    AddError(nameof(PropositionsString), Resources.Error_Required);
+                }
+
+                else if (cpt == 1 && Question.Type == Type.Many)
+                    AddError(nameof(PropositionsString), Resources.Error_PropositionMany);
+                else if (cpt > 1 && Question.Type == Type.One)
+                    AddError(nameof(PropositionsString), Resources.Error_PropositionOne);
+
+            }
+
+            RaiseErrors();
+            return !HasErrors;
+        }
     }
 
 }

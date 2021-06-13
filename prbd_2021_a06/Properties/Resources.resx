@@ -129,6 +129,9 @@
   <data name="Error_MaxStudent" xml:space="preserve">
     <value>le nombre d'étudiant doit-être supérieur à 0</value>
   </data>
+  <data name="Error_PasswordDoesNotExist" xml:space="preserve">
+    <value>le mot de passe n'existe pas</value>
+  </data>
   <data name="Error_PropositionMany" xml:space="preserve">
     <value>question avec une plusieurs réponses</value>
   </data>

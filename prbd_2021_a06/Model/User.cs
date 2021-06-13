@@ -27,9 +27,12 @@ namespace prbd_2021_a06.Model
         [NotMapped]
         public IEnumerable<Course> CoursesForStudent { get => StudentCourses.Select(sc => sc.Course); }
         public virtual ICollection<Course> CoursesForTeacher { get; set; } = new HashSet<Course>();
+        [NotMapped]
         public string AbsolutePicturePath
         {
-            get { return PicturePath != null ? App.IMAGE_PATH + "\\" + PicturePath : null; }
+            
+            get { 
+                return PicturePath != null ? App.IMAGE_PATH + "\\" + PicturePath : null; }
         }
 
         //public User() { }
@@ -66,17 +69,19 @@ namespace prbd_2021_a06.Model
             this.FirstName = FirstName;
             this.Password = Password;
             this.Email = Email;
-            this.Role = Role;
             this.PicturePath = PicturePath;
+            this.Role = Role;
+            
         }
 
         public override string ToString() {
             return LastName + " " + FirstName;
         }
+        [NotMapped]
         public bool IsTeacher {
             get => this.Role == Role.Teacher;
         }
-
+        [NotMapped]
         public bool IsStudent {
             get => this.Role == Role.Student;
         }
@@ -113,6 +118,7 @@ namespace prbd_2021_a06.Model
             return questions;
 
         }
+        
     }
 
 

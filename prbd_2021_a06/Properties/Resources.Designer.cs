@@ -97,6 +97,15 @@ namespace prbd_2021_a06.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à le mot de passe n&apos;existe pas.
+        /// </summary>
+        public static string Error_PasswordDoesNotExist {
+            get {
+                return ResourceManager.GetString("Error_PasswordDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à question avec une plusieurs réponses.
         /// </summary>
         public static string Error_PropositionMany {
