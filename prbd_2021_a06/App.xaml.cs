@@ -30,7 +30,9 @@ namespace prbd_2021_a06
         MSG_CLOSE_TABQUIZZ_ETUDIANT,
         MSG_QUESTIONQUIZZ_CHANGED,
         MSG_QUIZZ_CHANGED,
-        MSG_QUIZZ
+        MSG_QUIZZ ,
+        MSG_CATEGORY,
+        MSG_CATEGORY_CHANGE
 
     }
     public partial class App : ApplicationBase {

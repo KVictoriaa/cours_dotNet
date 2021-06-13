@@ -225,6 +225,12 @@ namespace prbd_2021_a06.ViewModel
                 }
                 Questions = new ObservableCollectionFast<Question>(ques);
             });
+            App.Register(this, AppContext.MSG_CATEGORY_CHANGE, () => {
+
+                //Category = new ObservableCollection<Category>(Course.Categories);
+                AutreCategory();
+
+            }); 
         }
         private bool SaveActionEnab()
         {
@@ -269,9 +275,13 @@ namespace prbd_2021_a06.ViewModel
             this.Course = course;
             Questions = new ObservableCollectionFast<Question>(Course.Questions);
             RaisePropertyChanged();
+            //Category = new ObservableCollection<Category>(Course.Categories);
+            AutreCategory(); 
+
+
+        }
+        public void AutreCategory() {
             Category = new ObservableCollection<Category>(Course.Categories);
-            
-               
         }
         
         public string Enonce

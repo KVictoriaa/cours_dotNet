@@ -58,7 +58,7 @@
             <Button x:Name="btnLoginTeacher" Content="LoginTeacher as (Penelle) " 
                 Width="100" IsDefault="True"  
                 Command="{Binding LoginTeacher }" Margin="10,0,0,10"/>
-            <Button x:Name="btnLoginStudent" Content="btnLoginStudent as (Hello bonjour)" 
+            <Button x:Name="btnLoginStudent" Content="LoginStudent as (Hello bonjour)" 
                       Width="100" IsDefault="True" 
                     Command="{Binding LoginStudent}" Margin="10,0,0,0"/>
         </StackPanel>

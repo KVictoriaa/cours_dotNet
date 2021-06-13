@@ -59,18 +59,25 @@ namespace prbd_2021_a06.ViewModel
                     OnRefreshData();
                 }
 
+
             }
+            NotifyColleagues(AppContext.MSG_CATEGORY);
+            NotifyColleagues(AppContext.MSG_CATEGORY_CHANGE);
         }
 
-        public void DeleteItem(int id)
-        {
+        public void DeleteItem(int id) {
             var item = App.Context.Categories.Find(id);
-            if (item != null)
-            {
+            if (item != null) {
                 item.Remove();
+
+
                 OnRefreshData();
             }
+            NotifyColleagues(AppContext.MSG_CATEGORY);
+            NotifyColleagues(AppContext.MSG_CATEGORY_CHANGE );
         }
+
+         
 
         protected override void OnRefreshData()
         {
