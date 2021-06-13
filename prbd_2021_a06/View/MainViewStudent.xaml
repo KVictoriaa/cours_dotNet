@@ -12,7 +12,9 @@
         Title="{Binding Title}"
         Height="768" Width="1024">
     <Window.DataContext>
-        <vm:MainViewModelStudent x:Name="vm" OnLogout="Vm_OnLogout" DisplayCourse="Vm_DiplayCourse"  DiplayQuizzStudent="Vm_DiplayQuizzStudent"/>
+        <vm:MainViewModelStudent x:Name="vm" OnLogout="Vm_OnLogout" DisplayCourse="Vm_DiplayCourse"  
+                                 DiplayQuizzStudent="Vm_DiplayQuizzStudent" 
+                                 CloseTabQuizStudent="Vm_CloseTabQuizStudent"/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -21,6 +23,7 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="{x:Static p:Resources.Menu_Logout}" Command="{Binding LogoutCommand}" />
+            <MenuItem Header="{x:Static p:Resources.Menu_Profile}" Click="Menu_Profile_Click" />
         </Menu>
         <f:MyTabControl x:Name="tabControl" Margin="10,10,10,10" Grid.Row="1">
             <TabItem x:Name="coursTab" Header="Cours" Tag="Cors">
