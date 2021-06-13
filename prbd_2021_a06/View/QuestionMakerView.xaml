@@ -57,7 +57,6 @@
                         <DataTemplate >
                             <StackPanel Width="auto" Orientation="Horizontal">
                                 <CheckBox Margin="0" Content="{Binding Title}" x:Name="CheckCategory" IsChecked="{Binding IsChecked}" Click="QestionsByCategory"/>
-                                <!--<TextBlock FontSize="10" FontWeight="Normal" Width="30" TextAlignment="Center" Text="{Binding Title}" HorizontalAlignment="Right" VerticalAlignment="Top" />-->
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -74,7 +73,6 @@
                     <Run Text="{Binding Questions.Count, Mode=OneWay}" />
                     <Run Text=")" />
             </TextBlock>
-            <!--ScrollViewer Grid.Row="2" Margin="0,1,0,90" Grid.RowSpan="2" >-->
                 <ListView x:Name="listVie" ItemsSource="{Binding Questions , Mode=TwoWay}" Grid.Row="2" BorderBrush="Transparent" SelectionMode="Single" 
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
                           SelectedItem="{Binding SelectedQuestion, Mode=TwoWay}"  IsEnabled="{Binding ReadMode}" 
@@ -98,7 +96,6 @@
                                                       Content="{Binding Body}" IsChecked="{Binding IsCorrect}"
                                                       Margin="10,0,10,0" HorizontalAlignment="Left"  
                                                       IsEnabled="{Binding Question.ReadMode}"/>
-                                                <!--<TextBlock FontSize="10" FontWeight="Normal" Width="auto" TextAlignment="Center" Text="{Binding Body}" HorizontalAlignment="Right" VerticalAlignment="Stretch" />-->
                                             </StackPanel>
 
                                         </DataTemplate>
@@ -109,7 +106,6 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            <!--</ScrollViewer>-->
         </Grid>
         <Grid HorizontalAlignment="Right" Width="350">
             <Grid.ColumnDefinitions>
