@@ -61,14 +61,18 @@ namespace prbd_2021_a06.ViewModel
         
         private void SaveAction()
         {
-            //if (IsNew)
-            //{
-            //    // Un petit raccourci ;-)
-            //    Member.Password = Member.Pseudo;
-            //    Context.Add(Member);
-            //    //IsNew = false;
-            //}
-           
+            if (Validate())
+            {
+                var user = (from u in App.Context.Users
+                            where u.Email.Equals(Email)
+                            select u).FirstOrDefault();
+
+                
+                user.Password = Password;
+                Context.Update(user);
+                
+            }
+
             Context.SaveChanges();
             OnRefreshData();
             //NotifyColleagues(AppMessages.MSG_MEMBER_CHANGED, Member);
@@ -76,18 +80,16 @@ namespace prbd_2021_a06.ViewModel
 
         private bool CanSaveAction()
         {
-            //if (IsNew)
-            //    return !string.IsNullOrEmpty(Pseudo);
-            return User != null && (Context?.Entry(User)?.State == EntityState.Modified);
+           
+            return  email != null && password != null && confirm_password != null && !HasErrors;
         }
 
         private void CancelAction()
         {
-            
-            
-                Context.Reload(User);
-                RaisePropertyChanged();
-            
+
+            Context.Reload(User);
+            RaisePropertyChanged();
+
         }
 
         private bool CanCancelAction()
