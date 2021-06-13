@@ -56,9 +56,9 @@ namespace prbd_2021_a06
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            //Context.Database.EnsureDeleted();
-            //Context.Database.EnsureCreated();
-            //Context.SeedData();
+            Context.Database.EnsureDeleted();
+            Context.Database.EnsureCreated();
+            Context.SeedData();
         }
 
         protected override void OnRefreshData()

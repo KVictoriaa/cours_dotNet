@@ -21,6 +21,20 @@ namespace prbd_2021_a06.ViewModel
             get => courseId;
             set => SetProperty<int>(ref courseId, value, OnRefreshData);
         }
+
+        private bool showSave = false;
+        public bool ShowSave {
+            get => showSave; 
+            set => SetProperty<bool>(ref showSave, value);
+        }
+
+        private bool showDelete = false;
+        public bool ShowDelete {
+            get => showDelete;
+            set => SetProperty<bool>(ref showDelete, value);
+        }
+
+
         public ICommand RegisterCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
