@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using prbd_2021_a06.Model;
+using prbd_2021_a06.Properties;
 using PRBD_Framework;
 using System;
 using System.Collections.Generic;
@@ -54,29 +55,52 @@ namespace prbd_2021_a06.ViewModel
         public ICommand Save { get; set; }
         public ICommand Cancel { get; set; }
         public ICommand AddQuestions { get; set; }
+        public ICommand DeleteQuestions { get; set; }
         public QuizMakerViewModel() : base()
         {
-            Save = new RelayCommand(OnSaveQuiz, CanSaveAction);
+            Save = new RelayCommand(() => {
+                if (Validate())
+                {
+                    OnSaveQuiz();
+                }
+            
+                },
+                ()=> CanSaveAction());
             Cancel = new RelayCommand(OnCancelQuiz, CanCancelAction);
             DeleteCommand = new RelayCommand(OnDeleteQuiz, () => !IsNew);
             AddQuestions = new RelayCommand(() =>
             {
-
+                var quiz = (from q in App.Context.Quizzes
+                            where q.Id == Quizz.Id
+                            select q).FirstOrDefault();
                 if (SelectedQuestion != null)
                 {
                     var QuestionsQuizz = new QuestionQuiz();
                     QuestionsQuizz.Question = SelectedQuestion;
-                    QuestionsQuizz.Quiz = Quizz;
+                    QuestionsQuizz.Quiz = quiz;
                     QuestionsQuizz.Point = Point;
                     Context.QuestionQuizzes.Add(QuestionsQuizz);
                     QuestionsCourse.Remove(SelectedQuestion);
                 }
 
                 Context.SaveChanges();
-                ListQuestionsQuizz();
+                
+                ReloadListQuestionsQuizz();
             }
 
             );
+            DeleteQuestions = new RelayCommand(() =>
+            {
+                if (SelectedQuestionQuiz != null)
+
+                {  
+                    QuestionsCourse.Add(SelectedQuestionQuiz.Question);
+                    Context.QuestionQuizzes.Remove(SelectedQuestionQuiz);
+
+                    Context.SaveChanges();
+                }
+                ReloadListQuestionsQuizz();
+            });
             App.Register(this, AppContext.MSG_QUESTIONQUIZZ_CHANGED, () =>
             {
                 ListQuestionsQuizz();
@@ -137,6 +161,7 @@ namespace prbd_2021_a06.ViewModel
                 App.Context.SaveChanges();
                 Id = quiz.Id;
                 IsNew = false;
+               
                 //NotifyColleagues(AppContext.MSG_QUIZZ_CHANGED, quiz.Id);
             }
 
@@ -144,7 +169,7 @@ namespace prbd_2021_a06.ViewModel
             {
                 foreach (var questionQuiz in QuestionQuizzs)
                 {
-                    // cas d'une modification
+                    
                     if (questionQuiz.Id > 0 && !string.IsNullOrEmpty(questionQuiz.Question.Enonce))
                     {
                         var q = App.Context.QuestionQuizzes.Find(questionQuiz.Id);
@@ -184,19 +209,29 @@ namespace prbd_2021_a06.ViewModel
         
         private void OnDeleteQuiz()
         {
-            //if (Id > 0)
-            //{
-            //    var quiz = App.Context.Quizzes.Find(Id);
-            //    if (quiz != null)
-            //    {
-            OnCancelQuiz();
-                    Quizz.Delete();
-                    App.Context.SaveChanges();
+            
+            var quiz = (from q in App.Context.Quizzes
+                       where q.Id == Quizz.Id
+                       select q).FirstOrDefault();
+            quiz.Delete();
             NotifyColleagues(AppContext.MSG_QUIZZ);
             NotifyColleagues(AppContext.MSG_CLOSE_TABQUIZZ, Quizz);
-            //    }
-            //    //Add a comment to this line
-            //}
+            
+        }
+        public void LoadQuestionsNewQuiz()
+        {
+
+            QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
+            var Questions = new ObservableCollection<Question>();
+
+            foreach (var question in QuestionsCourse)
+            {
+
+                    Questions.Add(question);
+
+            }
+            QuestionsCourse = new ObservableCollection<Question>(Questions);
+
         }
         public void LoadQuestions()
         {
@@ -226,11 +261,16 @@ namespace prbd_2021_a06.ViewModel
             this.IsNew = isNew;
             Console.WriteLine(IsNew);
             ListQuestionsQuizz();
-            if (quizz.Id > 0)
+            if (!isNew)
             {
                 CourseQuiz = quizz.Course;
                 LoadQuestions();
                 //QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
+            }
+            else
+            {
+                CourseQuiz = quizz.Course;
+                LoadQuestionsNewQuiz();
             }
             
             
@@ -256,6 +296,7 @@ namespace prbd_2021_a06.ViewModel
                 Quizz.Title = value;
                 RaisePropertyChanged(nameof(Title));
                 NotifyColleagues(AppContext.MSG_TITLEQUIZZ_CHANGED, Quizz);
+                Validate();
             }
         }
         public string Course
@@ -305,6 +346,7 @@ namespace prbd_2021_a06.ViewModel
                     Quizz.Debut = value.Value;
 
                 RaisePropertyChanged(nameof(Debut));
+                Validate();
             }
         }
         public DateTime? Fin
@@ -316,6 +358,7 @@ namespace prbd_2021_a06.ViewModel
                 if (value != null)
                     Quizz.Fin = value.Value;
                 RaisePropertyChanged(nameof(Fin));
+                Validate();
             }
         }
 
@@ -340,8 +383,9 @@ namespace prbd_2021_a06.ViewModel
         {
             get
             {
-
+                
                 return selectedQuestion;
+
             }
             set
             {
@@ -350,10 +394,51 @@ namespace prbd_2021_a06.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public QuestionQuiz selectedQuestionQuiz;
+        public QuestionQuiz SelectedQuestionQuiz
+        {
+            get
+            {
+
+                return selectedQuestionQuiz;
+
+            }
+            set
+            {
+                selectedQuestionQuiz = value;
+                RaisePropertyChanged(nameof(SelectedQuestionQuiz));
+                RaisePropertyChanged();
+            }
+        }
+        
         public void ListQuestionsQuizz()
         {
+          if(IsNew)
+            {
+                QuestionQuizzs = new ObservableCollection<QuestionQuiz>();
+            }
+            else
+            {
+                var quiz = (from q in App.Context.Quizzes
+                            where q.Title == Quizz.Title
+                            select q).FirstOrDefault();
+
+                QuestionQuizzs = new ObservableCollection<QuestionQuiz>(Quizz.QuestionQuizzes);
+            }
             
-            QuestionQuizzs = new ObservableCollection<QuestionQuiz>(Quizz.QuestionQuizzes);
+        }
+
+        public void ReloadListQuestionsQuizz()
+        {
+            
+                var quiz
+                = (from q in App.Context.Quizzes
+                            where q.Id == Quizz.Id
+                            select q).FirstOrDefault();
+
+                QuestionQuizzs = new ObservableCollection<QuestionQuiz>(quiz.QuestionQuizzes);
+            
+
         }
         public Visibility ChangeQuizz
         {
@@ -362,7 +447,30 @@ namespace prbd_2021_a06.ViewModel
                 return( Quizz != null && Id > 0 && Quizz.Debut < DateTime.Now) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
+        public override bool Validate()
+        {
+            ClearErrors();
 
+            if (IsNew)
+            {
+
+                
+
+                if (string.IsNullOrEmpty(Title))
+                {
+                    AddError(nameof(Title), Resources.Error_Required);
+                }
+
+                if (Debut < DateTime.Now)
+                    AddError(nameof(Debut), Resources.Error_DateDebut);
+                if (Fin < Debut)
+                    AddError(nameof(Fin), Resources.Error_DateFin);
+
+            }
+
+            RaiseErrors();
+            return !HasErrors;
+        }
         protected override void OnRefreshData()
         {
             

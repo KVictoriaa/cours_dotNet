@@ -134,10 +134,23 @@ namespace prbd_2021_a06.ViewModel
         protected override void OnRefreshData()
         {
             IQueryable<Course> courses = string.IsNullOrEmpty(Filter) ? Course.GetAll() : Course.GetFiltered(Filter);
-            var filteredCourses = from c in courses where c.Title.Contains(
-                                    Filter)    
-                                  select c;
-            Courses = new ObservableCollection<Course>(filteredCourses);
+            if(!App.CurrentUser.IsTeacher)
+            {
+                var filteredCourses = from c in courses
+                                      where c.Title.Contains(
+                                      Filter)
+                                      select c;
+                Courses = new ObservableCollection<Course>(filteredCourses);
+            }
+            else
+            {
+                var filteredCoursesTeacher = from c in courses
+                                      where c.Title.Contains(
+                                        Filter) && c.Teacher.Id == App.CurrentUser.Id
+                                      select c;
+                Courses = new ObservableCollection<Course>(filteredCoursesTeacher);
+
+            }
             
         }
     }

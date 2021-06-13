@@ -45,11 +45,15 @@
                     <TextBox x:Name="Title" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" VerticalAlignment="Center" Height="18" Margin="79,0,0,10"/>
                 </f:ValidatedField>
                 <Label Content="Start :" Grid.Row="2" Margin="0,0,0,10" />
-                <DatePicker Height="25"  HorizontalAlignment="Left" Margin="79,0,0,46" SelectedDate="{Binding Debut}" Grid.RowSpan="2" x:Name="datePicker1"   
+                <f:ValidatedField Grid.Column="1" VerticalAlignment="Center" Grid.Row="2">
+                <DatePicker Height="25"  HorizontalAlignment="Left" Margin="79,0,0,10" SelectedDate="{Binding Debut}" Grid.RowSpan="2" x:Name="datePicker1"   
                             Grid.Row="2" Width="115" />
-                <Label Content="FInish :" Grid.Row="3"  Margin="0,0,0,10" />
-                <DatePicker Height="25" HorizontalAlignment="Left" Margin="79,0,0,46" SelectedDate="{Binding Fin}"  Grid.RowSpan="2" x:Name="datePicker2"   
+                </f:ValidatedField>
+                <Label Content="Finish :" Grid.Row="3"  Margin="0,0,0,10" />
+                <f:ValidatedField Grid.Column="1" VerticalAlignment="Center" Grid.Row="3">
+                <DatePicker Height="25" HorizontalAlignment="Left" Margin="79,0,0,10" SelectedDate="{Binding Fin}"  Grid.RowSpan="2" x:Name="datePicker2"   
                              Width="115" Grid.Row="3" />
+                </f:ValidatedField>
                 <Label Content="Course :" Grid.Row="4" Margin="0,0,0,10"/>
                 <TextBlock x:Name="Course" Text="{Binding Course, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Grid.Row="4" Height="18" Margin="79,0,0,10"/>
             </Grid>
@@ -88,7 +92,7 @@
         </ListView>-->
                 <DataGrid x:Name="gridQuizz" Margin="10,10,10,9" AutoGenerateColumns="False"
                       ItemsSource="{Binding QuestionQuizzs}"  IsReadOnly="False" 
-                      
+                      SelectedItem="{Binding SelectedQuestionQuiz, UpdateSourceTrigger=PropertyChanged}"
                      >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Position" Binding="{Binding Id}"/>

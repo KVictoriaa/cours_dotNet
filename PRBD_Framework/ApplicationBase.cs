@@ -36,6 +36,7 @@ namespace PRBD_Framework {
                 // vérifie d'abord si on trouve un dossier images à côté de l'exécutable
                 var path = Path.GetFullPath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/images");
                 if (!Directory.Exists(path)) {
+                    
                     // Si ce n'est pas le cas, on feinte en se basant sur le stack trace pour retrouver le path du code source du projet
                     // C'est ce qui sera utilisé quand on est dans VS en mode design.
                     // (voir https://stackoverflow.com/a/20999702)
@@ -43,6 +44,7 @@ namespace PRBD_Framework {
                     foreach (var frame in trace.GetFrames()) {
                         path = Path.GetFullPath(Path.GetDirectoryName(frame.GetFileName()) + "/images");
                         if (Directory.Exists(path))
+
                             return path;
                     }
                     path = null;

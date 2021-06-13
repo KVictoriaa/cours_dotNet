@@ -275,15 +275,15 @@ namespace prbd_2021_a06.ViewModel
             this.Course = course;
             Questions = new ObservableCollectionFast<Question>(Course.Questions);
             RaisePropertyChanged();
-            //Category = new ObservableCollection<Category>(Course.Categories);
-            AutreCategory(); 
-
-
+            Category = new ObservableCollection<Category>(Course.Categories);
+            
+               
         }
         public void AutreCategory() {
             Category = new ObservableCollection<Category>(Course.Categories);
         }
         
+
         public string Enonce
         {
             get { return Question?.Enonce; }
@@ -472,6 +472,14 @@ namespace prbd_2021_a06.ViewModel
 
             RaiseErrors();
             return !HasErrors;
+        }
+        public bool IsEnabled
+        {
+            get
+            {
+                
+                return SelectedQuestion == null ? false :  SelectedQuestion.IsEnabled;
+            }
         }
     }
 

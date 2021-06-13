@@ -171,9 +171,9 @@
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="5" Width="350" Grid.ColumnSpan="2">
             <Button Content="New Question"  VerticalAlignment="Bottom" Command="{Binding NewCommand}" HorizontalAlignment="Right" Width="75" Margin="5" />
-            <Button Content="Save" HorizontalAlignment="Right" Command="{Binding SaveOneCommand}" VerticalAlignment="Bottom" Width="75" Grid.Row="0" Margin="5"/>
+            <Button Content="Save" HorizontalAlignment="Right" Command="{Binding SaveOneCommand}" VerticalAlignment="Bottom" Width="75" Grid.Row="0" Margin="5" IsEnabled="{Binding IsEnabled}"/>
             <Button Content="Cancel" HorizontalAlignment="Right" Command="{Binding CancelCommand}" VerticalAlignment="Bottom" Width="75" Grid.Row="0" Margin="5"/>
-            <Button Content="Delete" HorizontalAlignment="Right" Command="{Binding DeleteCommand}" VerticalAlignment="Bottom" Width="75" Grid.Row="0" Margin="5"/>
+            <Button Content="Delete" HorizontalAlignment="Right" Command="{Binding DeleteCommand}" VerticalAlignment="Bottom" Width="75" Grid.Row="0" Margin="5" IsEnabled="{Binding IsEnabled}"/>
         </StackPanel>
 
     </Grid>

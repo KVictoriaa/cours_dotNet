@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Error_DateDebut" xml:space="preserve">
+    <value>La date de debut doit-être supérieur a la date du jour</value>
+  </data>
+  <data name="Error_DateFin" xml:space="preserve">
+    <value>La date de fin doit-être supérieur a la date de début</value>
+  </data>
   <data name="Error_DoesExist" xml:space="preserve">
     <value>email existe déja</value>
   </data>
