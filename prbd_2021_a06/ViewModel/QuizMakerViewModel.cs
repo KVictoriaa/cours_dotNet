@@ -108,9 +108,10 @@ namespace prbd_2021_a06.ViewModel
         private void OnSaveQuiz()
         {
             Quiz quiz;
-            if (Id > 0)
+            if (!IsNew)
             {
-                quiz = App.Context.Quizzes.Find(Id);
+                Console.WriteLine("Save ancien quiz");
+                quiz = App.Context.Quizzes.Find(Quizz.Id);
                 // Modifier le quiz
                 if (quiz != null)
                 {
@@ -134,7 +135,9 @@ namespace prbd_2021_a06.ViewModel
                 };
                 App.Context.Quizzes.Add(quiz);
                 App.Context.SaveChanges();
-                //NotifyColleagues(AppContext.MSG_QUIZZ_CHANGED, Quizz.Title);
+                Id = quiz.Id;
+                IsNew = false;
+                //NotifyColleagues(AppContext.MSG_QUIZZ_CHANGED, quiz.Id);
             }
 
             if (QuestionQuizzs != null && quiz != null && quiz.Id > 0)
@@ -178,19 +181,22 @@ namespace prbd_2021_a06.ViewModel
             NotifyColleagues(AppContext.MSG_RENAMEQuizz_TAB, Quizz);
             // Notifier la vue.
         }
-
+        
         private void OnDeleteQuiz()
         {
-            if (Id > 0)
-            {
-                var quiz = App.Context.Quizzes.Find(Id);
-                if (quiz != null)
-                {
+            //if (Id > 0)
+            //{
+            //    var quiz = App.Context.Quizzes.Find(Id);
+            //    if (quiz != null)
+            //    {
+            OnCancelQuiz();
                     Quizz.Delete();
                     App.Context.SaveChanges();
-                }
-                //Add a comment to this line
-            }
+            NotifyColleagues(AppContext.MSG_QUIZZ);
+            NotifyColleagues(AppContext.MSG_CLOSE_TABQUIZZ, Quizz);
+            //    }
+            //    //Add a comment to this line
+            //}
         }
         public void LoadQuestions()
         {
