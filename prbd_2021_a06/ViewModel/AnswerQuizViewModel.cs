@@ -200,7 +200,7 @@ namespace prbd_2021_a06.ViewModel
         {
             
                 Console.WriteLine("Close");
-                NotifyColleagues(AppContext.MSG_CLOSE_TABQUIZZ, Quizz);
+                NotifyColleagues(AppContext.MSG_CLOSE_TABQUIZZ_ETUDIANT, Quizz);
             
         }
         public int Id
