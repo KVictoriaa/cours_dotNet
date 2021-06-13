@@ -7,19 +7,18 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using prbd_2021_a06.Model;
+using prbd_2021_a06.Properties;
 using PRBD_Framework;
 namespace prbd_2021_a06.ViewModel
 {
     public class ProfileViewModel : ViewModelCommon
     {
-        public event Func<string> OnLoadImage;
+       
         public ICommand Save { get; set; }
         public ICommand Cancel { get; set; }
         public ICommand Delete { get; set; }
-        public ICommand LoadImage { get; set; }
-        public ICommand ClearImage { get; set; }
-
-        private ImageHelper imageHelper;
+        
+        
         private string email;
         public string Email
         {
@@ -34,41 +33,32 @@ namespace prbd_2021_a06.ViewModel
         public string AncienPassword
         {
             get => ancien_password;
-            set => SetProperty<string>(ref ancien_password, value);
+            set => SetProperty<string>(ref ancien_password, value, () => Validate());
         }
         private string password;
         public string Password
         {
             get => password;
-            set => SetProperty<string>(ref password, value);
+            set => SetProperty<string>(ref password, value, () => Validate());
         }
 
         private string confirm_password;
         public string ConfirmPassword
         {
             get => confirm_password;
-            set => SetProperty<string>(ref confirm_password, value);
+            set => SetProperty<string>(ref confirm_password, value, () => Validate());
         }
+        
         public ProfileViewModel() : base()
         {
             Save = new RelayCommand(SaveAction, CanSaveAction);
             Cancel = new RelayCommand(CancelAction, CanCancelAction);
-            Delete = new RelayCommand(DeleteAction/*, () => !IsNew*/);
-            LoadImage = new RelayCommand(LoadImageAction);
-            ClearImage = new RelayCommand(ClearImageAction, () => PicturePath != null);
-            Console.WriteLine(App.CurrentUser);
             User = App.CurrentUser;
-            imageHelper = new ImageHelper(App.IMAGE_PATH, User.PicturePath);
+            Email = App.CurrentUser.Email;
+          
         }
-        public string PicturePath
-        {
-            get { return User?.AbsolutePicturePath; }
-            set
-            {
-                User.PicturePath = value;
-                RaisePropertyChanged(nameof(PicturePath));
-            }
-        }
+
+        
         private void SaveAction()
         {
             //if (IsNew)
@@ -78,8 +68,7 @@ namespace prbd_2021_a06.ViewModel
             //    Context.Add(Member);
             //    //IsNew = false;
             //}
-            imageHelper.Confirm(User.Email);
-            PicturePath = imageHelper.CurrentFile;
+           
             Context.SaveChanges();
             OnRefreshData();
             //NotifyColleagues(AppMessages.MSG_MEMBER_CHANGED, Member);
@@ -94,16 +83,11 @@ namespace prbd_2021_a06.ViewModel
 
         private void CancelAction()
         {
-            if (imageHelper.IsTransitoryState)
-            {
-                imageHelper.Cancel();
-            }
             
-            else
-            {
+            
                 Context.Reload(User);
                 RaisePropertyChanged();
-            }
+            
         }
 
         private bool CanCancelAction()
@@ -111,38 +95,44 @@ namespace prbd_2021_a06.ViewModel
             return User != null /*&& (IsNew || Context?.Entry(Member)?.State == EntityState.Modified)*/;
         }
 
-        private void LoadImageAction()
+        
+        
+       
+        public override bool Validate()
         {
-            var res = OnLoadImage?.Invoke();
-            if (res != null)
-            {
-                imageHelper.Load(res);
-                PicturePath = imageHelper.CurrentFile;
-            }
-        }
+            ClearErrors();
 
-        private void ClearImageAction()
-        {
-            imageHelper.Clear();
-            PicturePath = imageHelper.CurrentFile;
-        }
 
-        private void DeleteAction()
-        {
-            CancelAction();
-            if (File.Exists(PicturePath))
-                File.Delete(PicturePath);
-            //User.Delete();
-            //NotifyColleagues(AppMessages.MSG_MEMBER_CHANGED, Member);
-            //NotifyColleagues(AppMessages.MSG_CLOSE_TAB, Member);
-        }
-        public override void Dispose()
-        {
-            if (imageHelper.IsTransitoryState)
-                imageHelper.Cancel();
-            // Ne pas oublier sinon il continue à recevoir les notifications et risque de planter !
+
+            var user = (from u in App.Context.Users
+                        where u.Email.Equals(Email)
+                        select u).FirstOrDefault();
+
+
+            if (string.IsNullOrEmpty(Email))
+                AddError(nameof(Email), Resources.Error_Required);
+            else if (Email.Length < 3)
+                AddError(nameof(Email), Resources.Error_LengthGreaterEqual3);
+            //else if (user.Email == Email)
+            // AddError(nameof(Email), Resources.Error_DoesExist);
+
+
             
-            base.Dispose();
+            if (Password != ConfirmPassword)
+                AddError(nameof(ConfirmPassword), Resources.Error_WrongPasswordConfirm);
+
+            if (AncienPassword != user.Password)
+                AddError(nameof(AncienPassword), Resources.Error_PasswordDoesNotExist);
+
+            if (string.IsNullOrEmpty(Password))
+                AddError(nameof(Password), Resources.Error_Required);
+            else if (Password.Length < 3)
+                AddError(nameof(Password), Resources.Error_LengthGreaterEqual3);
+
+
+
+            RaiseErrors();
+            return !HasErrors;
         }
         protected override void OnRefreshData()
         {

@@ -45,7 +45,7 @@ namespace prbd_2021_a06.ViewModel
         private string picturePath;
         public string PicturePath
         {
-            get => picturePath = null;
+            get => picturePath = "unknwon-user.jpg";
             //set => SetProperty<string>(ref password, value, () => Validate());
         }
         public event Action OnSignupSuccess;
@@ -106,8 +106,8 @@ namespace prbd_2021_a06.ViewModel
                     AddError(nameof(Email), Resources.Error_Required);
                 else if (Email.Length < 3)
                     AddError(nameof(Email), Resources.Error_LengthGreaterEqual3);
-                //else if (user.Email != Email)
-                   // AddError(nameof(Email), Resources.Error_DoesExist);
+                else if (user.Email == Email)
+                    AddError(nameof(Email), Resources.Error_DoesExist);
             
             
                if (string.IsNullOrEmpty(FirstName))
