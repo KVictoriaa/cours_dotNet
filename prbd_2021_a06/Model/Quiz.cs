@@ -65,11 +65,7 @@ namespace prbd_2021_a06.Model
             QuestionQuizzes.Remove(Question);
             Context.SaveChanges();
         }
-        public void Delete()
-        {
-            Context.Quizzes.Remove(this);
-            Context.SaveChanges();
-        }
+        
         [NotMapped]
         public bool IsEnabled
         {
@@ -90,8 +86,16 @@ namespace prbd_2021_a06.Model
 
             }
         }
-        
-        
+        public void Delete()
+        {
+            foreach (var questionQuiz in QuestionQuizzes)
+            {
+                Context.QuestionQuizzes.Remove(questionQuiz);
+            }
+            Context.Quizzes.Remove(this);
+            Context.SaveChanges();
+        }
+
         public override string ToString()
         {
             //string str = "Cours : ";

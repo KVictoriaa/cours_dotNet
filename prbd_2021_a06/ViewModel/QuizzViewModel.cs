@@ -128,6 +128,12 @@ namespace prbd_2021_a06.ViewModel
                 
                 NotifyColleagues(AppContext.MSG_DISPLAY_QUIZZSTUDENT, quizzes);
             });
+            App.Register(this, AppContext.MSG_QUIZZ, () =>
+            {
+                //this.Teacher = CurrentUser;
+                Quizzes = new ObservableCollection<Quiz>(Course.Quizzes);
+            });
+
         }
         public ICommand NewQuizz { get; set; }
        
