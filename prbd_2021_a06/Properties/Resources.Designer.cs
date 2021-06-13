@@ -61,6 +61,24 @@ namespace prbd_2021_a06.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à La date de debut doit-être supérieur a la date du jour.
+        /// </summary>
+        public static string Error_DateDebut {
+            get {
+                return ResourceManager.GetString("Error_DateDebut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à La date de fin doit-être supérieur a la date de début.
+        /// </summary>
+        public static string Error_DateFin {
+            get {
+                return ResourceManager.GetString("Error_DateFin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à email existe déja.
         /// </summary>
         public static string Error_DoesExist {

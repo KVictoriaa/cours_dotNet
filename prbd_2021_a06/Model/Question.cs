@@ -117,11 +117,11 @@ namespace prbd_2021_a06.Model
             Context.SaveChanges();
         }
         [NotMapped]
-         public bool IsEnabled
+        public bool IsEnabled
         {
             get
             {
-                return QuestionDate.Contains(this);
+                return !QuestionDate.Contains(this);
             }
         }
         /* public static IQueryable<Question> GetAll(Course course)
