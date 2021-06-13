@@ -24,6 +24,7 @@ namespace prbd_2021_a06.View
     public partial class CategoryView : UserControlBase
     {
         public CategoryViewModel VmCategory { get; set; }
+        
 
 
         public CategoryView()
@@ -37,7 +38,7 @@ namespace prbd_2021_a06.View
 
 
         public static readonly DependencyProperty CourseProperty =
-           DependencyProperty.Register(" Course", typeof(Course), typeof(CategoryView), new
+           DependencyProperty.Register("Course", typeof(Course), typeof(CategoryView), new
               PropertyMetadata(null, new PropertyChangedCallback(OnCoursePropertyChanged)));
 
 
@@ -92,6 +93,16 @@ namespace prbd_2021_a06.View
             {
                 MessageBox.Show("Veuillez selectionner un élement");
             }
+
+        }
+
+        private void lvCategory_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            VmCategory.ShowDelete = lvCategory.SelectedItem != null; 
+        }
+
+        private void TextBox_KeyUp(object sender, KeyEventArgs e) {
+            var search = ((TextBox)sender).Text.ToString();
+            VmCategory.ShowSave = !string.IsNullOrEmpty(search);
 
         }
     }
