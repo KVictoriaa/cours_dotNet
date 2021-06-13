@@ -463,6 +463,14 @@ namespace prbd_2021_a06.ViewModel
             RaiseErrors();
             return !HasErrors;
         }
+        public bool IsEnabled
+        {
+            get
+            {
+                
+                return SelectedQuestion == null ? false :  SelectedQuestion.IsEnabled;
+            }
+        }
     }
 
 }

@@ -61,19 +61,22 @@ namespace prbd_2021_a06.ViewModel
             DeleteCommand = new RelayCommand(OnDeleteQuiz, () => !IsNew);
             AddQuestions = new RelayCommand(() =>
             {
-
+                var quiz = (from q in App.Context.Quizzes
+                            where q.Id == Quizz.Id
+                            select q).FirstOrDefault();
                 if (SelectedQuestion != null)
                 {
                     var QuestionsQuizz = new QuestionQuiz();
                     QuestionsQuizz.Question = SelectedQuestion;
-                    QuestionsQuizz.Quiz = Quizz;
+                    QuestionsQuizz.Quiz = quiz;
                     QuestionsQuizz.Point = Point;
                     Context.QuestionQuizzes.Add(QuestionsQuizz);
                     QuestionsCourse.Remove(SelectedQuestion);
                 }
 
                 Context.SaveChanges();
-                ListQuestionsQuizz();
+                
+                ReloadListQuestionsQuizz();
             }
 
             );
@@ -137,6 +140,7 @@ namespace prbd_2021_a06.ViewModel
                 App.Context.SaveChanges();
                 Id = quiz.Id;
                 IsNew = false;
+               
                 //NotifyColleagues(AppContext.MSG_QUIZZ_CHANGED, quiz.Id);
             }
 
@@ -144,7 +148,7 @@ namespace prbd_2021_a06.ViewModel
             {
                 foreach (var questionQuiz in QuestionQuizzs)
                 {
-                    // cas d'une modification
+                    
                     if (questionQuiz.Id > 0 && !string.IsNullOrEmpty(questionQuiz.Question.Enonce))
                     {
                         var q = App.Context.QuestionQuizzes.Find(questionQuiz.Id);
@@ -189,14 +193,34 @@ namespace prbd_2021_a06.ViewModel
             //    var quiz = App.Context.Quizzes.Find(Id);
             //    if (quiz != null)
             //    {
-            OnCancelQuiz();
-                    Quizz.Delete();
-                    App.Context.SaveChanges();
+            //OnCancelQuiz();
+     
+                    //Quizz.Delete();
+            var quiz = (from q in App.Context.Quizzes
+                       where q.Id == Quizz.Id
+                       select q).FirstOrDefault();
+            quiz.Delete();
+            //App.Context.SaveChanges();
             NotifyColleagues(AppContext.MSG_QUIZZ);
             NotifyColleagues(AppContext.MSG_CLOSE_TABQUIZZ, Quizz);
             //    }
             //    //Add a comment to this line
             //}
+        }
+        public void LoadQuestionsNewQuiz()
+        {
+
+            QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
+            var Questions = new ObservableCollection<Question>();
+
+            foreach (var question in QuestionsCourse)
+            {
+
+                    Questions.Add(question);
+
+            }
+            QuestionsCourse = new ObservableCollection<Question>(Questions);
+
         }
         public void LoadQuestions()
         {
@@ -226,11 +250,16 @@ namespace prbd_2021_a06.ViewModel
             this.IsNew = isNew;
             Console.WriteLine(IsNew);
             ListQuestionsQuizz();
-            if (quizz.Id > 0)
+            if (!isNew)
             {
                 CourseQuiz = quizz.Course;
                 LoadQuestions();
                 //QuestionsCourse = new ObservableCollection<Question>(CourseQuiz.Questions);
+            }
+            else
+            {
+                CourseQuiz = quizz.Course;
+                LoadQuestionsNewQuiz();
             }
             
             
@@ -352,8 +381,32 @@ namespace prbd_2021_a06.ViewModel
         }
         public void ListQuestionsQuizz()
         {
+          if(IsNew)
+            {
+                QuestionQuizzs = new ObservableCollection<QuestionQuiz>();
+            }
+            else
+            {
+                var quiz = (from q in App.Context.Quizzes
+                            where q.Title == Quizz.Title
+                            select q).FirstOrDefault();
+
+                QuestionQuizzs = new ObservableCollection<QuestionQuiz>(Quizz.QuestionQuizzes);
+            }
             
-            QuestionQuizzs = new ObservableCollection<QuestionQuiz>(Quizz.QuestionQuizzes);
+        }
+
+        public void ReloadListQuestionsQuizz()
+        {
+            
+                var quiz
+                = (from q in App.Context.Quizzes
+                            where q.Id == Quizz.Id
+                            select q).FirstOrDefault();
+
+                QuestionQuizzs = new ObservableCollection<QuestionQuiz>(quiz.QuestionQuizzes);
+            
+
         }
         public Visibility ChangeQuizz
         {
