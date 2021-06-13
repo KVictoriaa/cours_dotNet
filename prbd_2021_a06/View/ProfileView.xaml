@@ -59,15 +59,7 @@
                      f:PasswordHelper.Password="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" />
         </f:ValidatedField>
-        <!-- ROW #3 -->
-            <Label Content="Picture :" Grid.Row="4" />
-            <Grid Grid.Row="4" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-               
-            </Grid>
+         
             <!-- ROW #5 -->
             <WrapPanel Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="1" Width="166">
                 <Button x:Name="btnCancel" Content="Cancel" Command="{Binding Cancel}" Width="auto" Padding="5,1"/>
