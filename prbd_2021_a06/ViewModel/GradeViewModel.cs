@@ -22,11 +22,17 @@ namespace prbd_2021_a06.ViewModel
             get => studentCourses;
             set => SetProperty(ref studentCourses, value);
         }
-        private ObservableCollection<AnswerQuestions> quizzes = new ObservableCollection<AnswerQuestions>();
-        public ObservableCollection<AnswerQuestions> Quizzes
+        private ObservableCollection<QuestionQuiz> quizzes = new ObservableCollection<QuestionQuiz>();
+        public ObservableCollection<QuestionQuiz> Quizzes
         {
             get => quizzes;
             set => SetProperty(ref quizzes, value);
+        }
+        private ObservableCollection<AnswerQuestions> answerQuestions = new ObservableCollection<AnswerQuestions>();
+        public ObservableCollection<AnswerQuestions> AnswerQuestions
+        {
+            get => answerQuestions;
+            set => SetProperty(ref answerQuestions, value);
         }
         private Course course;
         public Course Course { get => course; set => SetProperty(ref course, value, OnRefreshData); }
@@ -40,7 +46,7 @@ namespace prbd_2021_a06.ViewModel
         {
             this.Course = course;
             StudentCourses = new ObservableCollection<StudentCourse>(Course.StudentCourses);
-            Quizzes = new ObservableCollection<AnswerQuestions>();
+            Quizzes = new ObservableCollection<QuestionQuiz>();
             LoadGrade();
         }
             

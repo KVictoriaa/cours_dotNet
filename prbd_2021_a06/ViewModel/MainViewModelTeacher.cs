@@ -15,7 +15,6 @@ namespace prbd_2021_a06.ViewModel
         public event Action<Course, bool> DisplayCourse;
         public event Action<Course> CloseTab;
         public event Action<Quiz> CloseTabQuiz;
-        public event Action<Quiz> CloseTabQuizStudent;
         public event Action<Course,string> RenameTab;
         public event Action<Quiz, string> RenameTabQuizz;
         public event Action<Quiz, bool> DisplayQuizz;
@@ -69,11 +68,7 @@ namespace prbd_2021_a06.ViewModel
                 CloseTabQuiz?.Invoke(quizz);
             });
 
-            Register<Quiz>(this, AppContext.MSG_CLOSE_TABQUIZZ_ETUDIANT, quizz =>
-            {
-                CloseTabQuizStudent?.Invoke(quizz);
-            });
-
+            
 
         }
         //public CourseViewModel CourseViewTeacher { get; private set; } = new CourseViewModel();
