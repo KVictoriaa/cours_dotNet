@@ -88,6 +88,7 @@ namespace prbd_2021_a06.Model
         {
             return Enonce ;
         }
+
         [NotMapped]
         private bool editMode = false;
         [NotMapped]
