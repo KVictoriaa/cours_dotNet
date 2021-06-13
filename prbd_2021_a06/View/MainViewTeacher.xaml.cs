@@ -77,7 +77,6 @@ namespace prbd_2021_a06.View
             }
         }
        
-
         private void Vm_CloseTab(Course course)
         {
             var tab = tabControl.FindByTag(course.Title);
