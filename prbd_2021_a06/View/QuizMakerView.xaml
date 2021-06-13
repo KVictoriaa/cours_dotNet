@@ -55,7 +55,7 @@
             </Grid>
             <StackPanel Grid.Column="1" VerticalAlignment="Top">
                 <Button x:Name="btnSave" Content="Save" VerticalAlignment="Bottom" Command="{Binding Save}" HorizontalAlignment="Right" Width="75" Grid.Row="1" Margin="5" Visibility="{Binding ChangeQuizz}"/>
-                <Button x:Name="btnDelete" Content="Delete" VerticalAlignment="Bottom" Command="{Binding DeleteOneCommand}" HorizontalAlignment="Right" Width="75" Grid.Row="1" Margin="5" Visibility="{Binding ChangeQuizz}"/>
+                <Button x:Name="btnDelete" Content="Delete" VerticalAlignment="Bottom" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" Width="75" Grid.Row="1" Margin="5" Visibility="{Binding ChangeQuizz}"/>
                 <Button x:Name="btnCancel" Content="Cancel" VerticalAlignment="Bottom" Command="{Binding Cancel}" HorizontalAlignment="Right" Width="75" Grid.Row="1" Margin="5" Visibility="{Binding ChangeQuizz}"/>
             </StackPanel>
         </Grid>
